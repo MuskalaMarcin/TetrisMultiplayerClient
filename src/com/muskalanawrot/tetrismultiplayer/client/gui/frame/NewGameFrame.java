@@ -1,0 +1,25 @@
+package com.muskalanawrot.tetrismultiplayer.client.gui.frame;
+
+import javax.swing.JFrame;
+
+import com.muskalanawrot.tetrismultiplayer.client.gui.panel.NewGamePanel;
+
+public class NewGameFrame extends JFrame
+{
+    private static final long serialVersionUID = -6770175343284490332L;
+
+    private NewGamePanel newGamePanel;
+
+    /**
+     * Create the frame.
+     */
+    public NewGameFrame()
+    {
+	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	setBounds(100, 100, 450, 300);
+	setTitle("Rozpocznij now¹ grê");
+	newGamePanel = new NewGamePanel();
+	setContentPane(newGamePanel);
+    }
+
+}

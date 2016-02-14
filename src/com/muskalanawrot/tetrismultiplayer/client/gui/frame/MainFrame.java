@@ -2,6 +2,7 @@ package com.muskalanawrot.tetrismultiplayer.client.gui.frame;
 
 import javax.swing.JFrame;
 
+import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.GameKeysListener;
 import com.muskalanawrot.tetrismultiplayer.client.gui.panel.MainPanel;
 
 public class MainFrame extends JFrame
@@ -28,6 +29,7 @@ public class MainFrame extends JFrame
 	setContentPane(mainPanel);
 	setResizable(false);
 	setVisible(true);
+	setFocusable(false);
     }
 
     public MainPanel getMainPanel()
@@ -35,10 +37,10 @@ public class MainFrame extends JFrame
 	return mainPanel;
     }
     
-    public void setSize(int size)
+    public void setSize(int playersNumber)
     {
-	mainPanel.setSize(size);
-	switch(size)
+	mainPanel.setSize(playersNumber);
+	switch(playersNumber)
 	{
 	case 1:
 	    super.setSize(437, 450);

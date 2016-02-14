@@ -23,23 +23,6 @@ public class Main implements Runnable
     public void run()
     {
 	mainFrame.setVisible(true);
-	try
-	{
-	    Thread.sleep(5000);
-	    mainFrame.setSize(2);
-	    Thread.sleep(5000);
-	    mainFrame.setSize(3);
-	    Thread.sleep(5000);
-	    mainFrame.setSize(4);
-	    Thread.sleep(5000);
-	    mainFrame.setSize(1);
-	}
-	catch (InterruptedException e)
-	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-
     }
 
     public MainPanel getMainPanel()
