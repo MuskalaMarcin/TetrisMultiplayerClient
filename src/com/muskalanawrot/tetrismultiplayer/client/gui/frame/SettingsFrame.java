@@ -15,8 +15,9 @@ public class SettingsFrame extends JFrame
      */
     public SettingsFrame()
     {
-	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setBounds(100, 100, 450, 300);
+	setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	setSize(450, 300);
+	setLocationRelativeTo(null);
 	setTitle("Ustawienia");
 	settingsPanel = new SettingsPanel();
 	setContentPane(settingsPanel);

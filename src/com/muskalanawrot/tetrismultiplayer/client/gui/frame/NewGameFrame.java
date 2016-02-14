@@ -16,7 +16,8 @@ public class NewGameFrame extends JFrame
     public NewGameFrame()
     {
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setBounds(100, 100, 450, 300);
+	setSize(450, 300);
+	setLocationRelativeTo(null);
 	setTitle("Rozpocznij now¹ grê");
 	newGamePanel = new NewGamePanel();
 	setContentPane(newGamePanel);

@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import com.muskalanawrot.tetrismultiplayer.client.Main;
 import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.GameKeysListener;
 
 public class MainPanel extends JPanel
@@ -18,14 +19,14 @@ public class MainPanel extends JPanel
     /**
      * Create the panel.
      */
-    public MainPanel()
+    public MainPanel(Main main)
     {
 	setLayout(null);
 	setFocusable(true);
 
 	addKeyListener(new GameKeysListener());
 	setBackground(new Color(0, 128, 255));
-	leftPanel = new LeftPanel();
+	leftPanel = new LeftPanel(main);
 	leftPanel.setLocation(10, 10);
 	leftPanel.setSize(200, 400);
 	add(leftPanel);
@@ -49,6 +50,7 @@ public class MainPanel extends JPanel
 			|| e.getY() < leftPanel.getY() || e.getY() > leftPanel.getY() + leftPanel.getSize().getHeight())
 		{
 		    requestFocus();
+		    leftPanel.getNickTxtField().setBackground(Color.WHITE);
 		}
 	    }
 
@@ -97,4 +99,11 @@ public class MainPanel extends JPanel
 	    break;
 	}
     }
+
+    public LeftPanel getLeftPanel()
+    {
+        return leftPanel;
+    }
+
+ 
 }

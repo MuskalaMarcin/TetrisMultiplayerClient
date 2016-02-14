@@ -2,7 +2,7 @@ package com.muskalanawrot.tetrismultiplayer.client.gui.frame;
 
 import javax.swing.JFrame;
 
-import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.GameKeysListener;
+import com.muskalanawrot.tetrismultiplayer.client.Main;
 import com.muskalanawrot.tetrismultiplayer.client.gui.panel.MainPanel;
 
 public class MainFrame extends JFrame
@@ -14,9 +14,9 @@ public class MainFrame extends JFrame
     /**
      * Create the frame.
      */
-    public MainFrame()
+    public MainFrame(Main main)
     {
-	mainPanel = new MainPanel();
+	mainPanel = new MainPanel(main);
 	init();
     }
 

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import com.muskalanawrot.tetrismultiplayer.client.Main;
 import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.ConnectActionListener;
 import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.ConnectToGameActionListener;
 import com.muskalanawrot.tetrismultiplayer.client.gui.actionlistener.RankingActionListener;
@@ -35,11 +36,14 @@ public class LeftPanel extends JPanel
     private JSeparator separator_1;
     private JLabel lblStatus;
 
+    private Main main;
+
     /**
      * Create the panel.
      */
-    public LeftPanel()
+    public LeftPanel(Main main)
     {
+	this.main = main;
 	setLayout(null);
 	setBackground(Color.WHITE);
 	setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -74,7 +78,7 @@ public class LeftPanel extends JPanel
      */
     private void setActionListeners()
     {
-	btnConnect.addActionListener(new ConnectActionListener());
+	btnConnect.addActionListener(new ConnectActionListener(main));
 	btnRanking.addActionListener(new RankingActionListener());
 	btnSettings.addActionListener(new SettingsActionListener());
 	btnStartNewGame.addActionListener(new StartNewGameActionListener());
@@ -119,20 +123,23 @@ public class LeftPanel extends JPanel
 
 	btnRanking.setBounds(10, 140, 180, 25);
 	btnRanking.setBackground(Color.WHITE);
+	btnRanking.setEnabled(false);
 
 	btnSettings.setBounds(10, 245, 180, 25);
 	btnSettings.setBackground(Color.WHITE);
 
 	btnStartNewGame.setBounds(10, 80, 180, 25);
 	btnStartNewGame.setBackground(Color.WHITE);
+	btnStartNewGame.setEnabled(false);
 
 	btnConnectToGame.setBounds(10, 110, 180, 25);
 	btnConnectToGame.setBackground(Color.WHITE);
-	
+	btnConnectToGame.setEnabled(false);
+
 	lblNick.setBounds(10, 190, 46, 14);
 
 	lblStatus.setBounds(10, 50, 46, 14);
-	
+
 	lblScore.setBounds(10, 16, 46, 14);
 
 	separator.setBounds(1, 280, 198, 2);
@@ -147,7 +154,7 @@ public class LeftPanel extends JPanel
 	statusTxtField.setBackground(Color.WHITE);
 	statusTxtField.setText("Niepo³¹czono");
 	statusTxtField.setHorizontalAlignment(JTextField.CENTER);
-	
+
 	nickTxtField.setBounds(55, 185, 135, 25);
 	nickTxtField.setColumns(10);
 	nickTxtField.setText("Goœæ");
@@ -176,6 +183,14 @@ public class LeftPanel extends JPanel
     public JTextField getStatusTxtField()
     {
 	return statusTxtField;
+    }
+
+    public void setStatusText(String text)
+    {
+	synchronized (statusTxtField)
+	{
+	    statusTxtField.setText(text);
+	}
     }
 
     /**
@@ -226,5 +241,22 @@ public class LeftPanel extends JPanel
     public void setConnectToGameBtnStatus(boolean isActive)
     {
 	btnConnectToGame.setEnabled(isActive);
+    }
+    
+    public void switchConnectBtn()
+    {
+	if(btnConnect.getText().equals("Po³¹cz"))
+	{
+	    btnConnect.setText("Roz³¹cz");
+	}
+	else
+	{
+	    btnConnect.setText("Po³¹cz");
+	}
+    }
+    
+    public String getNick()
+    {
+	return nickTxtField.getText();
     }
 }

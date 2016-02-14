@@ -16,7 +16,8 @@ public class RankingFrame extends JFrame
     public RankingFrame()
     {
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setBounds(100, 100, 450, 300);
+	setSize(450, 300);
+	setLocationRelativeTo(null);
 	setTitle("Ranking");
 	rankingTabbedPanel = new RankingTabbedPanel();
 	setContentPane(rankingTabbedPanel);
