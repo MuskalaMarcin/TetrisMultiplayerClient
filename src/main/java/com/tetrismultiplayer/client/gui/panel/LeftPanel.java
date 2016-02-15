@@ -1,21 +1,10 @@
 package main.java.com.tetrismultiplayer.client.gui.panel;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-
 import main.java.com.tetrismultiplayer.client.Main;
-import main.java.com.tetrismultiplayer.client.gui.actionlistener.ConnectActionListener;
-import main.java.com.tetrismultiplayer.client.gui.actionlistener.ConnectToGameActionListener;
-import main.java.com.tetrismultiplayer.client.gui.actionlistener.RankingActionListener;
-import main.java.com.tetrismultiplayer.client.gui.actionlistener.SettingsActionListener;
-import main.java.com.tetrismultiplayer.client.gui.actionlistener.StartNewGameActionListener;
+import main.java.com.tetrismultiplayer.client.gui.actionlistener.*;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class LeftPanel extends JPanel
 {
@@ -152,12 +141,12 @@ public class LeftPanel extends JPanel
 	statusTxtField.setColumns(10);
 	statusTxtField.setEditable(false);
 	statusTxtField.setBackground(Color.WHITE);
-	statusTxtField.setText("Niepo³¹czono");
+	statusTxtField.setText("NiepoÅ‚Ä…czono");
 	statusTxtField.setHorizontalAlignment(JTextField.CENTER);
 
 	nickTxtField.setBounds(55, 185, 135, 25);
 	nickTxtField.setColumns(10);
-	nickTxtField.setText("Goœæ");
+	nickTxtField.setText("GoÅ›Ä‡");
 	nickTxtField.setHorizontalAlignment(JTextField.CENTER);
 
 	scoreTxtField.setBounds(55, 10, 135, 25);
@@ -245,13 +234,13 @@ public class LeftPanel extends JPanel
     
     public void switchConnectBtn()
     {
-	if(btnConnect.getText().equals("Po³¹cz"))
+	if(btnConnect.getText().equals("PoÅ‚Ä…cz"))
 	{
-	    btnConnect.setText("Roz³¹cz");
+	    btnConnect.setText("RozÅ‚Ä…cz");
 	}
 	else
 	{
-	    btnConnect.setText("Po³¹cz");
+	    btnConnect.setText("PoÅ‚Ä…cz");
 	}
     }
     
