@@ -73,7 +73,7 @@ public class ConnectActionListener implements ActionListener
 		}
 		catch (IOException e1)
 		{
-		    e1.printStackTrace();
+		    leftPanel.setStatusText("B³¹d");
 		}
 	    }
 	}
