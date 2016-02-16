@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.LinkedList;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Common abstract class for all tetrominos.
  */
 public abstract class Tetromino
 {
@@ -17,32 +17,59 @@ public abstract class Tetromino
     protected Tetromino(GamePanel gamePanel, int positionX, int positionY)
     {
         this.bricksList = new LinkedList<>();
-        this.gamePanel = gamePanel;
         this.position = new Point(positionX, positionY);
+        this.gamePanel = gamePanel;
     }
 
-    public abstract void rotate();
+    /**
+     * Rotates tetromino clockwise.
+     */
+    public void rotate()
+    {
+        bricksList.forEach(brick -> {
+            int newX = position.x + position.y - brick.getPosition().y - Brick.LENGTH;
+            int newY = brick.getPosition().x + position.y - position.x;
+            brick.setNewLocation(newX, newY);
+        });
+    }
 
+    /**
+     * Moves tetromino right.
+     */
     public void moveRight()
     {
         bricksList.forEach(brick -> brick.moveBrick(Brick.LENGTH, 0));
     }
 
+    /**
+     * Moves tetromino left.
+     */
     public void moveLeft()
     {
         bricksList.forEach(brick -> brick.moveBrick(-Brick.LENGTH, 0));
     }
 
+    /**
+     * Moves tetromino down.
+     */
     public void moveDown()
     {
         bricksList.forEach(brick -> brick.moveBrick(0, Brick.LENGTH));
     }
 
-    public void drop(int y)
+    /**
+     * Drops tetromino selected number of rows down.
+     *
+     * @param rowsNumber number of rows to drop down
+     */
+    public void drop(int rowsNumber)
     {
-        bricksList.forEach(brick -> brick.moveBrick(0, y));
+        bricksList.forEach(brick -> brick.moveBrick(0, rowsNumber));
     }
 
+    /**
+     * Draws tetromino on game panel.
+     */
     public void draw()
     {
         bricksList.forEach(brick -> {

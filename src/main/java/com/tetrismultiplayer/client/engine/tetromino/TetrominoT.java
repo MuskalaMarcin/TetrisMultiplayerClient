@@ -17,9 +17,4 @@ public class TetrominoT extends Tetromino
         bricksList.add(new Brick(x + (Brick.LENGTH / 2), y - Brick.LENGTH, color));
         bricksList.add(new Brick(x - (Brick.LENGTH / 2), y, color));
     }
-
-    public void rotate()
-    {
-
-    }
 }

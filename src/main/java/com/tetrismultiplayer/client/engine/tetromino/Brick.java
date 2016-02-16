@@ -22,8 +22,16 @@ public class Brick extends JPanel
 
     public void moveBrick(int x, int y)
     {
-        Point point = getLocation();
-        point.move(x,y);
-        setLocation(point);
+        setLocation(getLocation().x + x, getLocation().y + y);
+    }
+
+    public void setNewLocation(int x, int y)
+    {
+        setLocation(x, y);
+    }
+
+    public Point getPosition()
+    {
+        return getLocation();
     }
 }

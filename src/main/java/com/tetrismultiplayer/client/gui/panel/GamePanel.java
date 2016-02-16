@@ -42,7 +42,7 @@ public class GamePanel extends JPanel
                 }
                 else
                 {
-                    tetrisList.forEach(t->t.moveDown());
+                    tetrisList.forEach(t->t.rotate());
                 }
 
 
