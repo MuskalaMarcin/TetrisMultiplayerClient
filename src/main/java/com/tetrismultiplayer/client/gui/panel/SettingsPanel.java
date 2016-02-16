@@ -1,15 +1,16 @@
 package main.java.com.tetrismultiplayer.client.gui.panel;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class SettingsPanel extends JPanel
 {
     private static final long serialVersionUID = 4746055900161316999L;
     private JTextField textField;
     private JTextField textField_1;
+	private JButton button1;
+	private JCheckBox checkBox1;
 
-    /**
+	/**
      * Create the panel.
      */
     public SettingsPanel()
