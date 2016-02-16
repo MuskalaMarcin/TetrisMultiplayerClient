@@ -232,9 +232,9 @@ public class LeftPanel extends JPanel
         btnConnectToGame.setEnabled(isActive);
     }
 
-    public void switchConnectBtn()
+    public void switchConnectBtn(Boolean status)
     {
-        if (btnConnect.getText().equals("Połącz"))
+        if (status)
         {
             btnConnect.setText("Rozłącz");
         }
@@ -246,7 +246,7 @@ public class LeftPanel extends JPanel
 
     public void setButtonStatus(Boolean status)
     {
-        switchConnectBtn();
+        switchConnectBtn(status);
         setConnectToGameBtnStatus(status);
         setRankingBtnStatus(status);
         setStartNewGameBtnStatus(status);

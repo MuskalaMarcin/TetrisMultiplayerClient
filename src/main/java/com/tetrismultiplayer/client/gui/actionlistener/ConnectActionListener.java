@@ -1,15 +1,14 @@
 package main.java.com.tetrismultiplayer.client.gui.actionlistener;
 
 import main.java.com.tetrismultiplayer.client.Main;
-import main.java.com.tetrismultiplayer.client.engine.ServerListenerThread;
 import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
+import main.java.com.tetrismultiplayer.client.implementation.ConnectToServer;
+import main.java.com.tetrismultiplayer.client.implementation.ConnectingException;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Action listener for connect/disconnect button.
@@ -36,64 +35,33 @@ public class ConnectActionListener implements ActionListener
     {
         if (e.getActionCommand().equals("Połącz"))
         {
-            if (leftPanel.getNick().isEmpty())
-            {
-                leftPanel.getNickTxtField().setBackground(Color.RED);
-            }
-            else
-            {
-                try
+            ConnectToServer connectToServer = new ConnectToServer(main, leftPanel);
+            connectToServer.addPropertyChangeListener(propertyChangeEvent -> {
+                if (connectToServer.isDone())
                 {
-                    Socket socket = new Socket("127.0.0.1", 65534);
-                    if (socket.isConnected() && !socket.isClosed())
+                    try
                     {
-                        main.setSocket(socket);
-
-                        sendConnectionMsg();
-                        String connectionStatus = main.receiveJSON().getString("state");
-                        if (connectionStatus.equals("connected"))
+                        if (connectToServer.get())
                         {
                             leftPanel.setStatusText("Połączono");
                             leftPanel.setButtonStatus(true);
-                            main.setServerListenerThread(new ServerListenerThread(main));
-
-                            main.getServerListenerThread().execute();
-
                         }
-                        else if (connectionStatus.equals("rejected"))
-                        {
-                            leftPanel.setStatusText("Odrzucono");
-                        }
-                        else throw new IOException();
+                        else throw new ConnectingException();
                     }
-                    else throw new IOException();
+                    catch (ConnectingException | InterruptedException | ExecutionException e1)
+                    {
+                        leftPanel.setStatusText("Błąd");
+                        leftPanel.setButtonStatus(false);
+                    }
                 }
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                    leftPanel.setStatusText("Błąd");
-                }
-            }
+            });
+            connectToServer.execute();
         }
         else
         {
-            sendEndMsg();
+            main.sendMessage(new JSONObject().put("cmd", "end"));
         }
     }
 
-    /**
-     * Sends connection message to server.
-     */
-    private void sendConnectionMsg()
-    {
-        main.sendMessage(new JSONObject().put("cmd", "connect").put("nick", leftPanel.getNick()));
-    }
 
-    /**
-     * Sends message ending connection to server.
-     */
-    private void sendEndMsg()
-    {
-        main.sendMessage(new JSONObject().put("cmd", "end"));
-    }
 }
