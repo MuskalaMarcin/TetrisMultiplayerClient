@@ -13,7 +13,7 @@ public class MainPanel extends JPanel
     private static final long serialVersionUID = -4369013203321168390L;
 
     private LeftPanel leftPanel;
-    private JPanel gamePanel;
+    private GamePanel gamePanel;
 
     /**
      * Create the panel.
@@ -30,11 +30,9 @@ public class MainPanel extends JPanel
         leftPanel.setSize(200, 400);
         add(leftPanel);
 
-        gamePanel = new JPanel();
+        gamePanel = new GamePanel();
         gamePanel.setLocation(220, 10);
         gamePanel.setSize(200, 400);
-        gamePanel.setBackground(Color.BLUE);
-        gamePanel.setFocusable(false);
         add(gamePanel);
 
         addMouseListener(new MouseListener()

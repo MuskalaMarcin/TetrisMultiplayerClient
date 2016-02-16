@@ -46,6 +46,9 @@ public class GameKeysListener implements KeyListener
                     key.put("key", "right");
                     main.sendMessage(key);
                     break;
+                case 0:
+                    key.put("key","drop");
+                    main.sendMessage(key);
             }
         }
     }
