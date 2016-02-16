@@ -38,7 +38,7 @@ public abstract class Tetromino
      */
     public void moveRight()
     {
-        bricksList.forEach(brick -> brick.moveBrick(Brick.LENGTH, 0));
+        bricksList.forEach(brick -> brick.moveBrick(1, 0));
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class Tetromino
      */
     public void moveLeft()
     {
-        bricksList.forEach(brick -> brick.moveBrick(-Brick.LENGTH, 0));
+        bricksList.forEach(brick -> brick.moveBrick(-1, 0));
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Tetromino
      */
     public void moveDown()
     {
-        bricksList.forEach(brick -> brick.moveBrick(0, Brick.LENGTH));
+        bricksList.forEach(brick -> brick.moveBrick(0, 1));
     }
 
     /**

@@ -16,13 +16,14 @@ public class Brick extends JPanel
         super();
         setLocation(new Point(positionX, positionY));
         setSize(new Dimension(LENGTH, LENGTH));
+        setBorder(BorderFactory.createRaisedBevelBorder());
         setBackground(color);
         setVisible(true);
     }
 
     public void moveBrick(int x, int y)
     {
-        setLocation(getLocation().x + x, getLocation().y + y);
+        setLocation(getLocation().x + x * LENGTH, getLocation().y + y * LENGTH);
     }
 
     public void setNewLocation(int x, int y)
