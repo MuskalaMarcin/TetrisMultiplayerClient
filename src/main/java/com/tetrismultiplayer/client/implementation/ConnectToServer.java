@@ -2,6 +2,7 @@ package main.java.com.tetrismultiplayer.client.implementation;
 
 import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.engine.ServerListenerThread;
+import main.java.com.tetrismultiplayer.client.engine.User;
 import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
 import org.json.JSONObject;
 
@@ -43,13 +44,15 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
                 {
                     main.setSocket(socket);
 
-                    main.sendMessage(new JSONObject().put("cmd", "connect").put("nick", leftPanel.getNick())
-                            .put("identifier", socket.getLocalSocketAddress()));
+                    main.sendMessage(new JSONObject().put("cmd", "connect").put("nick",
+                            leftPanel.getNick()).put("identifier", socket.getLocalSocketAddress().toString()
+                            .substring(1).replace(".", "").replace(":", "")));
 
                     String connectionStatus = main.receiveJSON().getString("state");
                     if (connectionStatus.equals("connected"))
                     {
-                        main.setServerListenerThread(new ServerListenerThread(main));
+                        main.setServerListenerThread(new ServerListenerThread(main, new User(leftPanel.getNick(),
+                                socket.getLocalSocketAddress().toString().substring(1).replace(".", "").replace(":", ""))));
                         main.getServerListenerThread().execute();
 
                         return true;

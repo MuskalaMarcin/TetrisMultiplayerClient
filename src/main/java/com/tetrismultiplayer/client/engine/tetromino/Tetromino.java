@@ -14,10 +14,10 @@ public abstract class Tetromino
     private GamePanel gamePanel;
     protected Point position;
 
-    protected Tetromino(GamePanel gamePanel, int positionX, int positionY)
+    protected Tetromino(GamePanel gamePanel, int row, int column)
     {
         this.bricksList = new LinkedList<>();
-        this.position = new Point(positionX, positionY);
+        this.position = new Point(row, column);
         this.gamePanel = gamePanel;
     }
 
@@ -39,6 +39,7 @@ public abstract class Tetromino
     public void moveRight()
     {
         bricksList.forEach(brick -> brick.moveBrick(1, 0));
+        position.move(position.x + Brick.LENGTH, position.y);
     }
 
     /**
@@ -47,6 +48,7 @@ public abstract class Tetromino
     public void moveLeft()
     {
         bricksList.forEach(brick -> brick.moveBrick(-1, 0));
+        position.move(position.x - Brick.LENGTH, position.y);
     }
 
     /**
@@ -55,6 +57,7 @@ public abstract class Tetromino
     public void moveDown()
     {
         bricksList.forEach(brick -> brick.moveBrick(0, 1));
+        position.move(position.x, position.y + Brick.LENGTH);
     }
 
     /**
@@ -65,6 +68,7 @@ public abstract class Tetromino
     public void drop(int rowsNumber)
     {
         bricksList.forEach(brick -> brick.moveBrick(0, rowsNumber));
+        position.move(position.x, position.y + (rowsNumber * Brick.LENGTH));
     }
 
     /**

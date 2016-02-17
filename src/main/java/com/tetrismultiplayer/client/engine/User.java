@@ -11,9 +11,13 @@ public class User
 {
     private LinkedList<Tetromino> tetrominos;
     private Tetromino activeTetromino;
+    private String nick;
+    private String identifier;
 
-    public User()
+    public User(String nick, String identifier)
     {
+        this.identifier = identifier;
+        this.nick = nick;
         this.tetrominos = new LinkedList<>();
     }
 
@@ -32,6 +36,16 @@ public class User
     public Tetromino getActiveTetromino()
     {
         return activeTetromino;
+    }
+
+    public String getNick()
+    {
+        return nick;
+    }
+
+    public String getIdentifier()
+    {
+        return identifier;
     }
 }
 

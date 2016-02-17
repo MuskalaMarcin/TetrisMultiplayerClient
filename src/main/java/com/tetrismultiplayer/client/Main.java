@@ -85,6 +85,7 @@ public class Main implements Runnable
     {
         synchronized (out)
         {
+            System.out.println("wyslano: " + msg);
             out.println(msg);
         }
     }
@@ -111,7 +112,9 @@ public class Main implements Runnable
 
     public JSONObject receiveJSON()
     {
-        return new JSONObject(receiveMessage());
+        JSONObject newObject = new JSONObject(receiveMessage());
+        System.out.println("odebrano: "+newObject);
+        return newObject;
     }
 
     public ServerListenerThread getServerListenerThread()
