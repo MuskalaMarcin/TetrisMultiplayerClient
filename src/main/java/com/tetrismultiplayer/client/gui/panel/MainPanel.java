@@ -100,5 +100,8 @@ public class MainPanel extends JPanel
         return leftPanel;
     }
 
-
+    public GamePanel getGamePanel()
+    {
+        return gamePanel;
+    }
 }

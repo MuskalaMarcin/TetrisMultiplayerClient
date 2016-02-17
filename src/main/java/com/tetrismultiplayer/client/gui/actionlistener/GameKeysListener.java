@@ -31,7 +31,7 @@ public class GameKeysListener implements KeyListener
             switch (e.getKeyCode())
             {
                 case 38:
-                    key.put("key", "up");
+                    key.put("key", "rotate");
                     main.sendMessage(key);
                     break;
                 case 40:
@@ -46,8 +46,8 @@ public class GameKeysListener implements KeyListener
                     key.put("key", "right");
                     main.sendMessage(key);
                     break;
-                case 0:
-                    key.put("key","drop");
+                case 32:
+                    key.put("key", "drop");
                     main.sendMessage(key);
             }
         }

@@ -1,6 +1,8 @@
 package main.java.com.tetrismultiplayer.client.engine;
 
 import main.java.com.tetrismultiplayer.client.Main;
+import main.java.com.tetrismultiplayer.client.gui.panel.GamePanel;
+import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -17,10 +19,14 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
     private Main main;
     private BufferedReader in;
     private Socket socket;
+    private LeftPanel leftPanel;
+    private GamePanel gamePanel;
 
     public ServerListenerThread(Main main)
     {
         this.main = main;
+        this.leftPanel = main.getMainPanel().getLeftPanel();
+        this.gamePanel = main.getMainPanel().getGamePanel();
         this.socket = main.getSocket();
         try
         {
@@ -39,13 +45,22 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         {
             while (!(newMsg = new JSONObject(in.readLine())).getString("cmd").equals("end"))
             {
-                String command = newMsg.getString("cmd");
-                System.out.println(command);
+                switch (newMsg.getString("cmd"))
+                {
+                    case "gameStarted":
+                        switch (newMsg.getString("type"))
+                        {
+                            case "single":
+                                leftPanel.setStatusText("Gra pojedyncza");
+                        }
+                }
+                System.out.println(newMsg);
+
 
             }
             socket.close();
-            main.getMainPanel().getLeftPanel().setStatusText("Rozłączono");
-            main.getMainPanel().getLeftPanel().setButtonStatus(false);
+            leftPanel.setStatusText("Rozłączono");
+            leftPanel.setButtonStatus(false);
         }
         catch (IOException e)
         {

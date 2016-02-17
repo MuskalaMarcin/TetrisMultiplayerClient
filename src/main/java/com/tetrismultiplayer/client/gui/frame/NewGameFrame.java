@@ -1,8 +1,9 @@
 package main.java.com.tetrismultiplayer.client.gui.frame;
 
-import javax.swing.JFrame;
-
+import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.gui.panel.NewGamePanel;
+
+import javax.swing.*;
 
 public class NewGameFrame extends JFrame
 {
@@ -13,14 +14,14 @@ public class NewGameFrame extends JFrame
     /**
      * Create the frame.
      */
-    public NewGameFrame()
+    public NewGameFrame(Main main)
     {
-	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setSize(450, 300);
-	setLocationRelativeTo(null);
-	setTitle("Rozpocznij now¹ grê");
-	newGamePanel = new NewGamePanel();
-	setContentPane(newGamePanel);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(450, 300);
+        setLocationRelativeTo(null);
+        setTitle("Rozpocznij nowÄ… grÄ™");
+        newGamePanel = new NewGamePanel(main);
+        setContentPane(newGamePanel);
     }
 
 }
