@@ -1,6 +1,7 @@
 package main.java.com.tetrismultiplayer.client.gui.actionlistener;
 
 import main.java.com.tetrismultiplayer.client.Main;
+import main.java.com.tetrismultiplayer.client.keys.KeysGetter;
 import org.json.JSONObject;
 
 import java.awt.event.KeyEvent;
@@ -28,27 +29,27 @@ public class GameKeysListener implements KeyListener
         if (main.getServerListenerThread() != null && !main.getServerListenerThread().isCancelled())
         {
             JSONObject key = new JSONObject().put("cmd", "move");
-	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.rotate))
+	    if(KeysGetter.keys.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.rotate))
 	    {
 		key.put("key", "rotate");
 		main.sendMessage(key);
 	    }
-	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.down))
+	    if(KeysGetter.keys.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.down))
 	    {
 		key.put("key", "down");
 		main.sendMessage(key);
 	    }
-	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.left))
+	    if(KeysGetter.keys.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.left))
 	    {
 		key.put("key", "left");
 		main.sendMessage(key);
 	    }
-	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.right))
+	    if(KeysGetter.keys.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.right))
 	    {
 		key.put("key", "right");
 		main.sendMessage(key);
 	    }
-	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.drop))
+	    if(KeysGetter.keys.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.drop))
 	    {
 		key.put("key", "drop");
 		main.sendMessage(key);
