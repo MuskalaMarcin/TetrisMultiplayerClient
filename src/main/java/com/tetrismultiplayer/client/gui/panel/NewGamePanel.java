@@ -15,9 +15,11 @@ public class NewGamePanel extends JPanel
     private JButton startGameBtn;
     private JComboBox<String> gameTypeComboBox;
     private JComboBox<Integer> playersNumberComboBox;
+    private JComboBox<String> difficultyLevelComboBox;
 
     private final String[] gameType = {"Wspolpraca", "Konkurencja"};
     private final Integer[] playersNumber = {1, 2, 3, 4};
+    private final String[] difficultyLevel = {"Łatwy", "Normalny", "Trudny"};
 
     /**
      * Create the panel.
@@ -32,6 +34,7 @@ public class NewGamePanel extends JPanel
         startGameBtn = new JButton("Rozpocznij");
         gameTypeComboBox = new JComboBox<>(gameType);
         playersNumberComboBox = new JComboBox<>(playersNumber);
+        difficultyLevelComboBox = new JComboBox<>(difficultyLevel);
 
         addElementsToPanel();
         setElementsSettings();
@@ -39,6 +42,7 @@ public class NewGamePanel extends JPanel
 
     private void addElementsToPanel()
     {
+        add(difficultyLevelComboBox);
         add(playersNumberComboBox);
         add(startGameBtn);
     }
@@ -65,11 +69,18 @@ public class NewGamePanel extends JPanel
                     startCmd.put("gameType", "concurrent");
                 }
             }
+            String difficult = (String) difficultyLevelComboBox.getSelectedItem();
+            if (difficult.equals(difficultyLevel[0])) startCmd.put("difficultyLvl", "easy");
+            else if (difficult.equals(difficultyLevel[1])) startCmd.put("difficultyLvl", "normal");
+            else if (difficult.equals(difficultyLevel[2])) startCmd.put("difficultyLvl", "hard");
             main.sendMessage(startCmd);
+            main.getMainPanel().requestFocus();
             SwingUtilities.getWindowAncestor(this).dispose();
         });
 
         gameTypeComboBox.setSize(50, 50);
+
+        difficultyLevelComboBox.setSize(50, 50);
 
         playersNumberComboBox.setSize(50, 50);
         playersNumberComboBox.addActionListener(action -> {
