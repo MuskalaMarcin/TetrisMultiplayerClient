@@ -1,6 +1,5 @@
 package main.java.com.tetrismultiplayer.client.gui.panel;
 
-import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.keys.KeysGetter;
 
 import javax.swing.*;
@@ -28,24 +27,23 @@ public class SettingsPanel extends JPanel
 	{
 	    setLayout(null);
 
-	    KeysGetter.loadKeys();
 	    left = addChoice("Przesuń w lewo", 80, 30);
-	    left.select(Main.settings.left);
+	    left.select(KeysGetter.settings.left);
 	    right = addChoice("Przesuń w prawo", 240, 30);
-	    right.select(Main.settings.right);
+	    right.select(KeysGetter.settings.right);
 	    down = addChoice("Przesuń w dół", 80, 80);
-	    down.select(Main.settings.down);
+	    down.select(KeysGetter.settings.down);
 	    rotate = addChoice("Obróć", 240, 80);
-	    rotate.select(Main.settings.rotate);
+	    rotate.select(KeysGetter.settings.rotate);
 	    drop = addChoice("Upuść", 80, 130);
-	    drop.select(Main.settings.drop);
+	    drop.select(KeysGetter.settings.drop);
 
 	    labelIp = new JLabel("IP serwera");
 	    labelIp.setBounds(80, 160, 100, 20);
 	    add(labelIp);
 
 	    poleIp = new JTextField();
-	    poleIp.setText(Main.settings.ip);
+	    poleIp.setText(KeysGetter.settings.ip);
 	    poleIp.setBounds(80, 180, 100, 25);
 	    add(poleIp);
 
@@ -54,7 +52,7 @@ public class SettingsPanel extends JPanel
 	    add(labelPort);
 
 	    polePort = new JTextField();
-	    polePort.setText(Main.settings.port.toString());
+	    polePort.setText(KeysGetter.settings.port.toString());
 	    polePort.setBounds(240, 180, 100, 25);
 	    add(polePort);
 
@@ -95,13 +93,13 @@ public class SettingsPanel extends JPanel
 
     private void saveConfig()
     {
-	Main.settings.setLeft(left.getSelectedItem());
-	Main.settings.setRight(right.getSelectedItem());
-	Main.settings.setDown(down.getSelectedItem());
-	Main.settings.setRotate(rotate.getSelectedItem());
-	Main.settings.setDrop(drop.getSelectedItem());
-	Main.settings.setIp(poleIp.getText());
-	Main.settings.setPort(Integer.parseInt(polePort.getText()));
+	KeysGetter.settings.setLeft(left.getSelectedItem());
+	KeysGetter.settings.setRight(right.getSelectedItem());
+	KeysGetter.settings.setDown(down.getSelectedItem());
+	KeysGetter.settings.setRotate(rotate.getSelectedItem());
+	KeysGetter.settings.setDrop(drop.getSelectedItem());
+	KeysGetter.settings.setIp(poleIp.getText());
+	KeysGetter.settings.setPort(Integer.parseInt(polePort.getText()));
 
 	saveConfigToFile();
     }
@@ -111,7 +109,7 @@ public class SettingsPanel extends JPanel
 	try
 	{
 	    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("D:\\settings.config"));
-	    out.writeObject(Main.settings);
+	    out.writeObject(KeysGetter.settings);
 	    out.close();
 	}
 	catch (IOException e)

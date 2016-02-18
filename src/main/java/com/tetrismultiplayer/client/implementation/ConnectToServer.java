@@ -4,6 +4,7 @@ import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.engine.ServerListenerThread;
 import main.java.com.tetrismultiplayer.client.engine.User;
 import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
+import main.java.com.tetrismultiplayer.client.keys.KeysGetter;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
         {
             try
             {
-                Socket socket = new Socket(Main.settings.ip, Main.settings.port);
+                Socket socket = new Socket(KeysGetter.settings.ip, KeysGetter.settings.port);
                 if (socket.isConnected() && !socket.isClosed())
                 {
                     main.setSocket(socket);
