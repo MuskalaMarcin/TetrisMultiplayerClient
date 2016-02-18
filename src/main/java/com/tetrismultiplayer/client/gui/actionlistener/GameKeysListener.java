@@ -28,28 +28,31 @@ public class GameKeysListener implements KeyListener
         if (main.getServerListenerThread() != null && !main.getServerListenerThread().isCancelled())
         {
             JSONObject key = new JSONObject().put("cmd", "move");
-            switch (e.getKeyCode())
-            {
-                case 38:
-                    key.put("key", "rotate");
-                    main.sendMessage(key);
-                    break;
-                case 40:
-                    key.put("key", "down");
-                    main.sendMessage(key);
-                    break;
-                case 37:
-                    key.put("key", "left");
-                    main.sendMessage(key);
-                    break;
-                case 39:
-                    key.put("key", "right");
-                    main.sendMessage(key);
-                    break;
-                case 32:
-                    key.put("key", "drop");
-                    main.sendMessage(key);
-            }
+	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.rotate))
+	    {
+		key.put("key", "rotate");
+		main.sendMessage(key);
+	    }
+	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.down))
+	    {
+		key.put("key", "down");
+		main.sendMessage(key);
+	    }
+	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.left))
+	    {
+		key.put("key", "left");
+		main.sendMessage(key);
+	    }
+	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.right))
+	    {
+		key.put("key", "right");
+		main.sendMessage(key);
+	    }
+	    if(KeysGetter.keyNames.get(e.getKeyCode()).equalsIgnoreCase(Main.settings.drop))
+	    {
+		key.put("key", "drop");
+		main.sendMessage(key);
+	    }
         }
     }
 

@@ -39,7 +39,7 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
         {
             try
             {
-                Socket socket = new Socket("127.0.0.1", 65534);
+                Socket socket = new Socket(Main.settings.ip, Main.settings.port);
                 if (socket.isConnected() && !socket.isClosed())
                 {
                     main.setSocket(socket);

@@ -3,12 +3,11 @@ package main.java.com.tetrismultiplayer.client;
 import main.java.com.tetrismultiplayer.client.engine.ServerListenerThread;
 import main.java.com.tetrismultiplayer.client.gui.frame.MainFrame;
 import main.java.com.tetrismultiplayer.client.gui.panel.MainPanel;
+import main.java.com.tetrismultiplayer.client.keys.KeysGetter;
+import main.java.com.tetrismultiplayer.client.keys.Settings;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Main implements Runnable
@@ -19,6 +18,8 @@ public class Main implements Runnable
     private PrintWriter out;
     private BufferedReader in;
     private ServerListenerThread serverListenerThread;
+    public static Settings settings;
+    private static ObjectInputStream instream;
 
     private Main()
     {
@@ -28,7 +29,29 @@ public class Main implements Runnable
 
     public static void main(String args[])
     {
-        new Main().run();
+	try
+	{
+	    KeysGetter.loadKeys();
+	    File f = new File("D:\\settings.config");
+	    if(f.exists())
+	    {
+		instream = new ObjectInputStream(new FileInputStream("D:\\settings.config"));
+		settings = (Settings) instream.readObject();
+		instream.close();
+	    }
+	    else
+	    {
+		settings = new Settings();
+	    }
+	}
+	catch (Exception e)
+	{
+	    settings = new Settings();
+	}
+	finally
+	{
+	    new Main().run();
+	}
     }
 
     @Override
