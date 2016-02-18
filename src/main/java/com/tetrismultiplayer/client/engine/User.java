@@ -33,6 +33,11 @@ public class User
         tetromino.draw();
     }
 
+    public void removeTetromino(Tetromino tetromino)
+    {
+        tetrominos.remove(tetromino);
+    }
+
     public Tetromino getActiveTetromino()
     {
         return activeTetromino;

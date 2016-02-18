@@ -83,4 +83,25 @@ public abstract class Tetromino
         gamePanel.validate();
         gamePanel.repaint();
     }
+
+    public LinkedList<Brick> getBricksList()
+    {
+        return bricksList;
+    }
+
+    public void removeBrick(Brick brick) throws InterruptedException
+    {
+        brick.setBackground(Color.BLACK);
+        Thread.sleep(20);
+        gamePanel.remove(brick);
+        bricksList.remove(brick);
+        gamePanel.validate();
+        gamePanel.repaint();
+        Thread.sleep(10);
+    }
+
+    public Point getPosition()
+    {
+        return position;
+    }
 }

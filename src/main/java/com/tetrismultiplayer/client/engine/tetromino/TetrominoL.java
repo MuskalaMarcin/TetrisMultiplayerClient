@@ -12,9 +12,9 @@ public class TetrominoL extends Tetromino
     public TetrominoL(GamePanel gamePanel, Color color, int x, int y)
     {
         super(gamePanel, x, y);
-        bricksList.add(new Brick(x - Brick.LENGTH, y - (Brick.LENGTH + Brick.LENGTH / 2), color));
-        bricksList.add(new Brick(x - Brick.LENGTH, y - (Brick.LENGTH / 2), color));
-        bricksList.add(new Brick(x - Brick.LENGTH, y + (Brick.LENGTH / 2), color));
-        bricksList.add(new Brick(x, y + (Brick.LENGTH / 2), color));
+        bricksList.add(new Brick(x - (Brick.LENGTH * 2), y, color));
+        bricksList.add(new Brick(x - Brick.LENGTH, y, color));
+        bricksList.add(new Brick(x, y, color));
+        bricksList.add(new Brick(x, y - Brick.LENGTH, color));
     }
 }

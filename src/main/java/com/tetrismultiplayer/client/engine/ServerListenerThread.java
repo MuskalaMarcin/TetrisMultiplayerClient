@@ -8,10 +8,9 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.LinkedList;
 
 /**
  * Created by Marcin on 2016-02-15.
@@ -19,7 +18,6 @@ import java.net.Socket;
 public class ServerListenerThread extends SwingWorker<Object, Object>
 {
     private Main main;
-    private BufferedReader in;
     private Socket socket;
     private LeftPanel leftPanel;
     private GamePanel gamePanel;
@@ -33,22 +31,14 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         this.leftPanel = main.getMainPanel().getLeftPanel();
         this.gamePanel = main.getMainPanel().getGamePanel();
         this.socket = main.getSocket();
-        try
-        {
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 
-    public Object doInBackground()
+    public Object doInBackground() throws InterruptedException
     {
         try
         {
             JSONObject newMsg;
-            while (!(newMsg = new JSONObject(in.readLine())).getString("cmd").equals("end"))
+            while (!(newMsg = main.receiveJSON()).getString("cmd").equals("end"))
             {
                 switch (newMsg.getString("cmd"))
                 {
@@ -71,7 +61,6 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         setRanking(newMsg);
                         break;
                 }
-                System.out.println(newMsg);
             }
 
             socket.close();
@@ -153,9 +142,31 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         newTetrominoUser.addTetromino(newTetromino);
     }
 
-    private void clearLine(JSONObject newMsg)
+    private void clearLine(JSONObject newMsg) throws InterruptedException
     {
+        User user = game.getUser(newMsg.getString("identifier"));
+        int rowWidth = newMsg.getInt("row") * Brick.LENGTH;
+        LinkedList<Tetromino> tetrominos = user.getTetrominos();
+        for (int i = 0; i < tetrominos.size(); i++)
+        {
+            LinkedList<Brick> bricks = tetrominos.get(i).getBricksList();
+            for (int j = 0; j < bricks.size(); j++)
+            {
+                if (bricks.get(j).getPosition().y == rowWidth)
+                {
+                    tetrominos.get(i).removeBrick(bricks.get(j));
+                    j--;
+                    if (tetrominos.get(i).getBricksList().isEmpty())
+                    {
+                        user.removeTetromino(tetrominos.get(i));
+                        i--;
+                    }
+                }
+            }
+        }
 
+        user.getTetrominos().stream().filter(tetromino -> tetromino.getPosition().y <= rowWidth)
+                .forEach(tetromino1 -> tetromino1.moveDown());
     }
 
     private void endGame(JSONObject newMsg)

@@ -1,6 +1,7 @@
 package main.java.com.tetrismultiplayer.client.engine.tetromino;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
 /**
@@ -16,7 +17,9 @@ public class Brick extends JPanel
         super();
         setLocation(new Point(positionX, positionY));
         setSize(new Dimension(LENGTH, LENGTH));
-        setBorder(BorderFactory.createRaisedBevelBorder());
+        setBorder(new CompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                BorderFactory.createRaisedBevelBorder()));
         setBackground(color);
         setVisible(true);
     }
