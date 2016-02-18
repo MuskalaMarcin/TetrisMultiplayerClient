@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class NewGamePanel extends JPanel
 {
@@ -16,43 +18,88 @@ public class NewGamePanel extends JPanel
     private JComboBox<String> gameTypeComboBox;
     private JComboBox<Integer> playersNumberComboBox;
     private JComboBox<String> difficultyLevelComboBox;
+    private JLabel gameTypeLabel, playersNumberLabel, difficultyLevelLabel;
+    private JSlider playersNumberSlider, difficultyLevelSlider;
 
     private final String[] gameType = {"Wspolpraca", "Konkurencja"};
     private final Integer[] playersNumber = {1, 2, 3, 4};
     private final String[] difficultyLevel = {"Łatwy", "Normalny", "Trudny"};
+    private final ArrayList<String> difficultyLevelList = new ArrayList<String>() {{
+	add("Easy");
+	add("Normal");
+	add("Hard");
+    }};
+    private Hashtable playersLabelTable, levelLabelTable;
 
     /**
      * Create the panel.
      */
     public NewGamePanel(Main main)
     {
-        super();
-        setLayout(new FlowLayout());
-
+        setLayout(new GridBagLayout());
         this.main = main;
+	GridBagConstraints c = new GridBagConstraints();
 
-        startGameBtn = new JButton("Rozpocznij");
+	playersLabelTable = new Hashtable();
+	playersLabelTable.put( new Integer( 1 ), new JLabel("1") );
+	playersLabelTable.put( new Integer( 2 ), new JLabel("2") );
+	playersLabelTable.put( new Integer( 3 ), new JLabel("3") );
+	playersLabelTable.put( new Integer( 4 ), new JLabel("4") );
+
+	levelLabelTable = new Hashtable();
+	levelLabelTable.put( new Integer( 1 ), new JLabel(difficultyLevel[0]) );
+	levelLabelTable.put( new Integer( 2 ), new JLabel(difficultyLevel[1]) );
+	levelLabelTable.put( new Integer( 3 ), new JLabel(difficultyLevel[2]) );
+
+	gameTypeLabel = new JLabel("Typ gry: ");
+	c.gridx = 0;
+	c.gridy = 0;
+	c.ipady = 25;
+	c.ipadx = 25;
+	add(gameTypeLabel, c);
         gameTypeComboBox = new JComboBox<>(gameType);
-        playersNumberComboBox = new JComboBox<>(playersNumber);
-        difficultyLevelComboBox = new JComboBox<>(difficultyLevel);
+	c.gridx = 1;
+	c.gridy = 0;
+	c.ipady = 10;
+	add(gameTypeComboBox, c);
 
-        addElementsToPanel();
-        setElementsSettings();
-    }
+	playersNumberLabel = new JLabel("Ilość graczy: ");
+	c.gridx = 0;
+	c.gridy = 1;
+	c.ipady = 25;
+	add(playersNumberLabel, c);
+	playersNumberSlider = new JSlider(JSlider.HORIZONTAL,1,4,2);
+	c.gridx = 1;
+	c.gridy = 1;
+	playersNumberSlider.setLabelTable(playersLabelTable);
+	playersNumberSlider.setPaintLabels(true);
+	add(playersNumberSlider, c);
 
-    private void addElementsToPanel()
-    {
-        add(difficultyLevelComboBox);
-        add(playersNumberComboBox);
-        add(startGameBtn);
+	difficultyLevelLabel = new JLabel("Poziom trudności: ");
+	c.gridx = 0;
+	c.gridy = 2;
+	add(difficultyLevelLabel, c);
+	difficultyLevelSlider = new JSlider(JSlider.HORIZONTAL,1,3,1);
+	c.gridx = 1;
+	c.gridy = 2;
+	difficultyLevelSlider.setLabelTable(levelLabelTable);
+	difficultyLevelSlider.setPaintLabels(true);
+	add(difficultyLevelSlider, c);
+
+	startGameBtn = new JButton("Rozpocznij grę");
+	c.gridx = 1;
+	c.gridy = 3;
+	c.ipady = 10;
+	add(startGameBtn, c);
+
+	setElementsSettings();
     }
 
     private void setElementsSettings()
     {
-        startGameBtn.setSize(50, 50);
         startGameBtn.addActionListener(action -> {
             JSONObject startCmd = new JSONObject().put("cmd", "newGame");
-            Integer playersNumber = (Integer) playersNumberComboBox.getSelectedItem();
+            Integer playersNumber = playersNumberSlider.getValue();
             startCmd.put("pNumber", playersNumber);
             if (playersNumber.equals(1))
             {
@@ -69,33 +116,26 @@ public class NewGamePanel extends JPanel
                     startCmd.put("gameType", "concurrent");
                 }
             }
-            String difficult = (String) difficultyLevelComboBox.getSelectedItem();
-            if (difficult.equals(difficultyLevel[0])) startCmd.put("difficultyLvl", "easy");
-            else if (difficult.equals(difficultyLevel[1])) startCmd.put("difficultyLvl", "normal");
-            else if (difficult.equals(difficultyLevel[2])) startCmd.put("difficultyLvl", "hard");
+
+	    startCmd.put("difficultyLvl", difficultyLevelList.get(difficultyLevelSlider.getValue() - 1));
             main.sendMessage(startCmd);
             main.getMainPanel().requestFocus();
             SwingUtilities.getWindowAncestor(this).dispose();
         });
 
-        gameTypeComboBox.setSize(50, 50);
-
-        difficultyLevelComboBox.setSize(50, 50);
-
-        playersNumberComboBox.setSize(50, 50);
-        playersNumberComboBox.addActionListener(action -> {
-            if (((JComboBox) action.getSource()).getSelectedItem().equals(1))
-            {
-                remove(gameTypeComboBox);
-                validate();
-                repaint();
-            }
-            else
-            {
-                add(gameTypeComboBox);
-                validate();
-                repaint();
-            }
-        });
+	playersNumberSlider.addChangeListener(action -> {
+	    if (((JSlider) action.getSource()).getValue() == 1)
+	    {
+		remove(gameTypeComboBox);
+		validate();
+		repaint();
+	    }
+	    else
+	    {
+		add(gameTypeComboBox);
+		validate();
+		repaint();
+	    }
+	});
     }
 }
