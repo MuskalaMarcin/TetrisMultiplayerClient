@@ -5,4 +5,8 @@ package main.java.com.tetrismultiplayer.client.engine;
  */
 public class CooperationGame extends Game
 {
+    public CooperationGame(User ownerUser, Integer playersNumber)
+    {
+        super(GameType.COOPERATION, ownerUser, playersNumber);
+    }
 }

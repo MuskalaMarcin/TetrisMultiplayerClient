@@ -30,8 +30,8 @@ public class Main implements Runnable
 
     public static void main(String args[])
     {
-	loadSettings();
-	new Main().run();
+        loadSettings();
+        new Main().run();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Main implements Runnable
     public JSONObject receiveJSON()
     {
         JSONObject newObject = new JSONObject(receiveMessage());
-        System.out.println("odebrano: "+newObject);
+        System.out.println("odebrano: " + newObject);
         return newObject;
     }
 
@@ -128,5 +128,10 @@ public class Main implements Runnable
     public void setServerListenerThread(ServerListenerThread serverListenerThread)
     {
         this.serverListenerThread = serverListenerThread;
+    }
+
+    public MainFrame getMainFrame()
+    {
+        return mainFrame;
     }
 }

@@ -34,7 +34,7 @@ public class ConnectToGameActionListener implements ActionListener
                     {
                         waitingGames = main.getServerListenerThread().getWaitingGames();
                     }
-                    ConnectToGameFrame frame = new ConnectToGameFrame(waitingGames);
+                    ConnectToGameFrame frame = new ConnectToGameFrame(waitingGames, main);
                     frame.setVisible(true);
                 }
                 catch (Exception e)

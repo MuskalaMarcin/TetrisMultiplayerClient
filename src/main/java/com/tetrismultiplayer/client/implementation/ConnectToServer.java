@@ -53,7 +53,8 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
                     if (connectionStatus.equals("connected"))
                     {
                         main.setServerListenerThread(new ServerListenerThread(main, new User(leftPanel.getNick(),
-                                socket.getLocalSocketAddress().toString().substring(1).replace(".", "").replace(":", ""))));
+                                socket.getLocalSocketAddress().toString().substring(1).replace(".", "").replace(":", ""),
+                                socket.getLocalSocketAddress().toString(), 0)));//TODO: dodac ranking
                         main.getServerListenerThread().execute();
 
                         return true;

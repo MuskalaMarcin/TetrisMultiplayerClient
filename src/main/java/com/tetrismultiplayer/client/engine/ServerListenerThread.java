@@ -33,7 +33,6 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         this.leftPanel = main.getMainPanel().getLeftPanel();
         this.gamePanel = main.getMainPanel().getGamePanel();
         this.socket = main.getSocket();
-        this.waitingGamesList = new LinkedList<>();
     }
 
     public Object doInBackground() throws InterruptedException
@@ -87,23 +86,38 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
 
     private void setGamesList(JSONObject newMsg)
     {
-        System.out.println("tutaj");
-        JSONArray gamesList = newMsg.getJSONArray("gamesList");
-        for (int i = 0; i < gamesList.length(); i++)
+        this.waitingGamesList = new LinkedList<>();
+        if (newMsg.getString("isEmpty").equals("false"))
         {
-            JSONObject game = gamesList.getJSONObject(i);
-            String owner = String.valueOf(game.getInt("owner"));
-            String type = game.getString("type");
-            System.out.println(owner + " " + type);
-            JSONArray users = game.getJSONArray("users");
-            for (int j = 0; j < users.length(); j++)
+            JSONArray gamesList = newMsg.getJSONArray("gamesList");
+            for (int i = 0; i < gamesList.length(); i++)
             {
-                JSONObject user = users.getJSONObject(j);
-                String nick = user.getString("nick");
-                String identifier = String.valueOf(user.getInt("identifier"));
-                String ip = user.getString("ip");
-                String ranking = String.valueOf(user.getInt("ranking"));
-                System.out.println(nick + " " + identifier + " " + ip + " " + ranking);
+                JSONObject game = gamesList.getJSONObject(i);
+                Game waitingGame = null;
+                JSONArray users = game.getJSONArray("users");
+                for (int j = 0; j < users.length(); j++)
+                {
+                    JSONObject user = users.getJSONObject(j);
+                    User newUser = new User(user.getString("nick"), user.getString("identifier"),
+                            user.getString("ip"), user.getInt("ranking"));
+                    if (j == 0)
+                    {
+                        switch (game.getString("type"))
+                        {
+                            case "CONCURRENT":
+                                waitingGame = new ConcurrentGame(newUser, game.getInt("playersNumber"));
+                                break;
+                            case "COOPERATION":
+                                waitingGame = new CooperationGame(newUser, game.getInt("playersNumber"));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        waitingGame.addUser(newUser);
+                    }
+                }
+                waitingGamesList.add(waitingGame);
             }
         }
     }
@@ -126,7 +140,42 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                 leftPanel.setStatusText("Gra pojedyncza");
                 game = new SingleGame(localUser);
                 break;
+            case "cooperation":
+                leftPanel.setStatusText("Gra wspólna");
+                LinkedList<User> newGameUsers = getNewGameUsers(newMsg);
+                game = new CooperationGame(newGameUsers.getFirst(), newMsg.getInt("playersNumber"));
+                newGameUsers.forEach(user -> game.addUser(user));
+                System.out.println("tutaj");
+                break;
+            case "concurrent":
+                leftPanel.setStatusText("Gra rywalizacja");
+                LinkedList<User> newGameUsers2 = getNewGameUsers(newMsg);
+                game = new ConcurrentGame(newGameUsers2.getFirst(), newMsg.getInt("playersNumber"));
+                newGameUsers2.forEach(user -> game.addUser(user));
+                break;
         }
+    }
+
+    private LinkedList<User> getNewGameUsers(JSONObject newMsg)
+    {
+        main.getMainFrame().setSize(newMsg.getInt("playersNumber"));
+        LinkedList<User> playingUsers = new LinkedList<>();
+        JSONArray users = newMsg.getJSONArray("players");
+        for (int j = 0; j < users.length(); j++)
+        {
+            JSONObject user = users.getJSONObject(j);
+            User newUser = new User(user.getString("nick"), user.getString("identifier"),
+                    user.getString("ip"), user.getInt("ranking"));
+            if (newUser.getIdentifier().equals(localUser.getIdentifier()))
+            {
+                playingUsers.add(localUser);
+            }
+            else
+            {
+                playingUsers.add(newUser);
+            }
+        }
+        return playingUsers;
     }
 
     private void performMove(JSONObject newMsg)

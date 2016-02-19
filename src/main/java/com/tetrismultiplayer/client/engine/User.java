@@ -13,11 +13,15 @@ public class User
     private Tetromino activeTetromino;
     private String nick;
     private String identifier;
+    private String ip;
+    private Integer ranking;
 
-    public User(String nick, String identifier)
+    public User(String nick, String identifier, String ip, Integer ranking)
     {
         this.identifier = identifier;
         this.nick = nick;
+        this.ip = ip;
+        this.ranking = ranking;
         this.tetrominos = new LinkedList<>();
     }
 

@@ -7,7 +7,6 @@ public class SingleGame extends Game
 {
     public SingleGame(User user)
     {
-        super();
-        users.put(user.getIdentifier(), user);
+        super(GameType.SINGLE, user, 1);
     }
 }

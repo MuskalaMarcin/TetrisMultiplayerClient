@@ -1,5 +1,6 @@
 package main.java.com.tetrismultiplayer.client.gui.frame;
 
+import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.engine.Game;
 import main.java.com.tetrismultiplayer.client.gui.panel.ConnectToGamePanel;
 
@@ -15,13 +16,13 @@ public class ConnectToGameFrame extends JFrame
     /**
      * Create the frame.
      */
-    public ConnectToGameFrame(LinkedList<Game> waitingGames)
+    public ConnectToGameFrame(LinkedList<Game> waitingGames, Main main)
     {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 300);
         setLocationRelativeTo(null);
-        setTitle("Do��cz do gry");
-        connectToGamePanel = new ConnectToGamePanel(waitingGames);
+        setTitle("Dołącz do gry");
+        connectToGamePanel = new ConnectToGamePanel(waitingGames, main);
         setContentPane(connectToGamePanel);
     }
 
