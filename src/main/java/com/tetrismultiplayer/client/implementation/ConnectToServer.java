@@ -64,7 +64,6 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
             }
             catch (IOException e1)
             {
-                e1.printStackTrace();
                 return false;
             }
         }

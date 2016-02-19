@@ -4,6 +4,7 @@ import main.java.com.tetrismultiplayer.client.Main;
 import main.java.com.tetrismultiplayer.client.engine.tetromino.*;
 import main.java.com.tetrismultiplayer.client.gui.panel.GamePanel;
 import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
     private GamePanel gamePanel;
     private Game game;
     private User localUser;
+    private LinkedList<Game> waitingGamesList;
 
     public ServerListenerThread(Main main, User localUser)
     {
@@ -31,6 +33,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         this.leftPanel = main.getMainPanel().getLeftPanel();
         this.gamePanel = main.getMainPanel().getGamePanel();
         this.socket = main.getSocket();
+        this.waitingGamesList = new LinkedList<>();
     }
 
     public Object doInBackground() throws InterruptedException
@@ -55,11 +58,19 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         clearLine(newMsg);
                         break;
                     case "endGame":
-                        endGame(newMsg);
+                        endGame();
                         break;
                     case "setRanking":
                         setRanking(newMsg);
                         break;
+                    case "waiting":
+                        setWaitingStatus(newMsg);
+                        break;
+                    case "timeout":
+                        waitingTimeout();
+                        break;
+                    case "setGamesList":
+                        setGamesList(newMsg);
                 }
             }
 
@@ -72,6 +83,39 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void setGamesList(JSONObject newMsg)
+    {
+        System.out.println("tutaj");
+        JSONArray gamesList = newMsg.getJSONArray("gamesList");
+        for (int i = 0; i < gamesList.length(); i++)
+        {
+            JSONObject game = gamesList.getJSONObject(i);
+            String owner = String.valueOf(game.getInt("owner"));
+            String type = game.getString("type");
+            System.out.println(owner + " " + type);
+            JSONArray users = game.getJSONArray("users");
+            for (int j = 0; j < users.length(); j++)
+            {
+                JSONObject user = users.getJSONObject(j);
+                String nick = user.getString("nick");
+                String identifier = String.valueOf(user.getInt("identifier"));
+                String ip = user.getString("ip");
+                String ranking = String.valueOf(user.getInt("ranking"));
+                System.out.println(nick + " " + identifier + " " + ip + " " + ranking);
+            }
+        }
+    }
+
+    private void waitingTimeout()
+    {
+        leftPanel.setStatusText("Brak graczy");
+    }
+
+    private void setWaitingStatus(JSONObject newMsg)
+    {
+        leftPanel.setStatusText(String.valueOf(newMsg.getInt("time")));
     }
 
     private void startNewGame(JSONObject newMsg)
@@ -169,13 +213,20 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                 .forEach(tetromino1 -> tetromino1.moveDown());
     }
 
-    private void endGame(JSONObject newMsg)
+    private void endGame()
     {
-
+        leftPanel.setStatusText("Koniec gry");
+        main.getMainPanel().getGamePanel().removeAll();
+        main.getMainPanel().getGamePanel().repaint();
     }
 
     private void setRanking(JSONObject newMsg)
     {
 
+    }
+
+    public LinkedList<Game> getWaitingGames()
+    {
+        return waitingGamesList;
     }
 }

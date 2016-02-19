@@ -1,8 +1,10 @@
 package main.java.com.tetrismultiplayer.client.gui.frame;
 
-import javax.swing.JFrame;
-
+import main.java.com.tetrismultiplayer.client.engine.Game;
 import main.java.com.tetrismultiplayer.client.gui.panel.ConnectToGamePanel;
+
+import javax.swing.*;
+import java.util.LinkedList;
 
 public class ConnectToGameFrame extends JFrame
 {
@@ -13,14 +15,14 @@ public class ConnectToGameFrame extends JFrame
     /**
      * Create the frame.
      */
-    public ConnectToGameFrame()
+    public ConnectToGameFrame(LinkedList<Game> waitingGames)
     {
-	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	setSize(450, 300);
-	setLocationRelativeTo(null);
-	setTitle("Do³¹cz do gry");
-	connectToGamePanel = new ConnectToGamePanel();
-	setContentPane(connectToGamePanel);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(450, 300);
+        setLocationRelativeTo(null);
+        setTitle("Doï¿½ï¿½cz do gry");
+        connectToGamePanel = new ConnectToGamePanel(waitingGames);
+        setContentPane(connectToGamePanel);
     }
 
 }

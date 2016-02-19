@@ -71,7 +71,7 @@ public class LeftPanel extends JPanel
         btnRanking.addActionListener(new RankingActionListener());
         btnSettings.addActionListener(new SettingsActionListener());
         btnStartNewGame.addActionListener(new StartNewGameActionListener(main));
-        btnConnectToGame.addActionListener(new ConnectToGameActionListener());
+        btnConnectToGame.addActionListener(new ConnectToGameActionListener(main));
     }
 
     /**
