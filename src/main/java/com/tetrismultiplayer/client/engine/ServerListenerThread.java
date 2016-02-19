@@ -12,6 +12,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Marcin on 2016-02-15.
@@ -237,29 +239,34 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
 
     private void clearLine(JSONObject newMsg) throws InterruptedException
     {
-        User user = game.getUser(newMsg.getString("identifier"));
-        int rowWidth = newMsg.getInt("row") * Brick.LENGTH;
-        LinkedList<Tetromino> tetrominos = user.getTetrominos();
-        for (int i = 0; i < tetrominos.size(); i++)
+        if (newMsg.getInt("position") == -1)
         {
-            LinkedList<Brick> bricks = tetrominos.get(i).getBricksList();
-            for (int j = 0; j < bricks.size(); j++)
-            {
-                if (bricks.get(j).getPosition().y == rowWidth)
+            int rowWidth = newMsg.getInt("row") * Brick.LENGTH;
+            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
+                LinkedList<Tetromino> tetrominos = user.getTetrominos();
+                for (int i = 0; i < tetrominos.size(); i++)
                 {
-                    tetrominos.get(i).removeBrick(bricks.get(j));
-                    j--;
-                    if (tetrominos.get(i).getBricksList().isEmpty())
+                    LinkedList<Brick> bricks = tetrominos.get(i).getBricksList();
+                    for (int j = 0; j < bricks.size(); j++)
                     {
-                        user.removeTetromino(tetrominos.get(i));
-                        i--;
+                        if (bricks.get(j).getPosition().y == rowWidth)
+                        {
+                            tetrominos.get(i).removeBrick(bricks.get(j));
+                            j--;
+                            if (tetrominos.get(i).getBricksList().isEmpty())
+                            {
+                                user.removeTetromino(tetrominos.get(i));
+                                i--;
+                            }
+                        }
                     }
                 }
-            }
-        }
+            });
 
-        user.getTetrominos().stream().filter(tetromino -> tetromino.getPosition().y <= rowWidth)
-                .forEach(tetromino1 -> tetromino1.moveDown());
+            game.getUsers().entrySet().stream().map(Map.Entry::getValue).map(User::getTetrominos).flatMap(t -> t.stream())
+                    .collect(Collectors.toList()).stream().filter(tetromino -> tetromino.getPosition().y <= rowWidth)
+                    .forEach(tetromino1 -> tetromino1.moveDown());
+        }
     }
 
     private void endGame()
