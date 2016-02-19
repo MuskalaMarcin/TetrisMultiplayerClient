@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Marcin on 2016-02-15.
@@ -255,6 +254,11 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                             j--;
                             if (tetrominos.get(i).getBricksList().isEmpty())
                             {
+                                for (int k = 0; k < tetrominos.get(i).getBricksList().size(); k++)
+                                {
+                                    gamePanel.remove(tetrominos.get(i).getBricksList().get(k));
+                                    tetrominos.get(i).removeBrick(tetrominos.get(i).getBricksList().get(k));
+                                }
                                 user.removeTetromino(tetrominos.get(i));
                                 i--;
                             }
@@ -263,15 +267,26 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                 }
             });
 
-            game.getUsers().entrySet().stream().map(Map.Entry::getValue).map(User::getTetrominos).flatMap(t -> t.stream())
-                    .collect(Collectors.toList()).stream().filter(tetromino -> tetromino.getPosition().y <= rowWidth)
-                    .forEach(tetromino1 -> tetromino1.moveDown());
+            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
+                user.getTetrominos().forEach(tetromino -> {
+                    LinkedList<Brick> bricks = tetromino.getBricksList();
+                    bricks.sort((brick1, brick2) -> Integer.valueOf(brick1.getPosition().y).compareTo(brick2.getPosition().y));
+                    if (bricks.getLast().getPosition().y < rowWidth)
+                    {
+                        tetromino.moveDown();
+                    }
+                });
+            });
+            
+            gamePanel.validate();
+            gamePanel.repaint();
         }
     }
 
     private void endGame()
     {
         leftPanel.setStatusText("Koniec gry");
+        localUser.getTetrominos().clear();
         main.getMainPanel().getGamePanel().removeAll();
         main.getMainPanel().getGamePanel().repaint();
     }

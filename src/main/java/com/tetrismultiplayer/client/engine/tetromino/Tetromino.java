@@ -91,11 +91,8 @@ public abstract class Tetromino
 
     public void removeBrick(Brick brick)
     {
-        brick.setBackground(Color.BLACK);
         gamePanel.remove(brick);
         bricksList.remove(brick);
-        gamePanel.validate();
-        gamePanel.repaint();
     }
 
     public Point getPosition()
