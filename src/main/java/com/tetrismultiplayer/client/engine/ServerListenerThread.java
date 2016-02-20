@@ -46,6 +46,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                 switch (newMsg.getString("cmd"))
                 {
                     case "gameStarted":
+			changeButtonStateToFalse();
                         startNewGame(newMsg);
                         break;
                     case "move":
@@ -59,6 +60,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         break;
                     case "endGame":
                         endGame();
+			changeButtonStateToTrue();
                         break;
                     case "setRanking":
                         setRanking(newMsg);
@@ -69,6 +71,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                     case "timeout":
                         waitingTimeout();
                         break;
+		    case "isFullGames":
+			setFullGamesStatus();
+			break;
                     case "setGamesList":
                         setGamesList(newMsg);
                 }
@@ -83,6 +88,11 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void setFullGamesStatus()
+    {
+	leftPanel.setStatusText("Max. liczba gier serwera");
     }
 
     private void setGamesList(JSONObject newMsg)
@@ -299,5 +309,19 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
     public LinkedList<Game> getWaitingGames()
     {
         return waitingGamesList;
+    }
+
+    public void changeButtonStateToFalse()
+    {
+	leftPanel.getComponent(4).setEnabled(false);
+	leftPanel.getComponent(5).setEnabled(false);
+	leftPanel.repaint();
+    }
+
+    public void changeButtonStateToTrue()
+    {
+	leftPanel.getComponent(4).setEnabled(true);
+	leftPanel.getComponent(5).setEnabled(true);
+	leftPanel.repaint();
     }
 }
