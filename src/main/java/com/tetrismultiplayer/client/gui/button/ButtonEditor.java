@@ -23,7 +23,6 @@ public class ButtonEditor extends DefaultCellEditor {
 	button = new JButton();
 	button.setOpaque(true);
 	this.main = main;
-
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value,

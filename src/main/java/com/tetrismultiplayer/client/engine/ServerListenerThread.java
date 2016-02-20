@@ -49,6 +49,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                 switch (newMsg.getString("cmd"))
                 {
                     case "gameStarted":
+			changeButtonStateToFalse();
                         startNewGame(newMsg);
                         break;
                     case "move":
@@ -61,6 +62,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         game.clearLine(newMsg);
                         break;
                     case "endGame":
+			changeButtonStateToTrue();
                         endGame();
                         break;
                     case "setRanking":
@@ -78,6 +80,8 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                     case "addScore":
                         addScore(newMsg);
                         break;
+		    case "isFullGames":
+			setFullGamesStatus();
                 }
             }
 
@@ -113,6 +117,14 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         {
             leftPanel.setScoreTxtField(game.getUser(newMsg.getString("identifier")).getScore());
         }
+    }
+
+    /**
+     * Method informing user about full games list on server
+     */
+    private void setFullGamesStatus()
+    {
+	leftPanel.setStatusText("Max. liczba gier serwera");
     }
 
     /**
@@ -270,5 +282,25 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
     public LinkedList<Game> getWaitingGames()
     {
         return waitingGamesList;
+    }
+
+    /**
+     * Method changing buttons state to false
+     */
+    public void changeButtonStateToFalse()
+    {
+	leftPanel.getComponent(4).setEnabled(false);
+	leftPanel.getComponent(5).setEnabled(false);
+	leftPanel.repaint();
+    }
+
+    /**
+     * Method changing buttons state to true
+     */
+    public void changeButtonStateToTrue()
+    {
+	leftPanel.getComponent(4).setEnabled(true);
+	leftPanel.getComponent(5).setEnabled(true);
+	leftPanel.repaint();
     }
 }
