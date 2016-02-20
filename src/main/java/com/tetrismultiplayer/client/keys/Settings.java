@@ -2,6 +2,9 @@ package main.java.com.tetrismultiplayer.client.keys;
 
 import java.io.Serializable;
 
+/**
+ * Class representing users keys settings.
+ */
 public class Settings implements Serializable
 {
     public String left, right, rotate, down, drop;

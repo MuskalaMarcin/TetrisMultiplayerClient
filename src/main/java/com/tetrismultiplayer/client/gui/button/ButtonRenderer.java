@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
+/**
+ * Class setting up visual aspect of connect to game buttons.
+ */
 public class ButtonRenderer extends JButton implements TableCellRenderer
 {
 

@@ -5,7 +5,7 @@ import main.java.com.tetrismultiplayer.client.engine.tetromino.Tetromino;
 import java.util.LinkedList;
 
 /**
- * Created by Marcin on 2016-02-17.
+ * Class representing one of application users
  */
 public class User
 {

@@ -84,17 +84,29 @@ public abstract class Tetromino
         gamePanel.repaint();
     }
 
+    /**
+     * Returns list of all bricks from tetromino.
+     * @return LinkedList<Brick> all bricks
+     */
     public LinkedList<Brick> getBricksList()
     {
         return bricksList;
     }
 
+    /**
+     * Removes selected brick from tetromino
+     * @param brick to remove
+     */
     public void removeBrick(Brick brick)
     {
         gamePanel.remove(brick);
         bricksList.remove(brick);
     }
 
+    /**
+     * Returns tetromino position.
+     * @return Point with tetromino position
+     */
     public Point getPosition()
     {
         return position;

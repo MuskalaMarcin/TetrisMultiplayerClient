@@ -5,7 +5,7 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Class brick extends JPanel and represents one of bricks making tetromino.
  */
 public class Brick extends JPanel
 {
@@ -24,16 +24,30 @@ public class Brick extends JPanel
         setVisible(true);
     }
 
+    /**
+     * Moves brick location by selected values
+     * @param x number of columns
+     * @param y number of rows
+     */
     public void moveBrick(int x, int y)
     {
         setLocation(getLocation().x + x * LENGTH, getLocation().y + y * LENGTH);
     }
 
+    /**
+     * Sets new brick location
+     * @param x column
+     * @param y row
+     */
     public void setNewLocation(int x, int y)
     {
         setLocation(x, y);
     }
 
+    /**
+     * Returns point with brick position.
+     * @return Point with coordinates
+     */
     public Point getPosition()
     {
         return getLocation();

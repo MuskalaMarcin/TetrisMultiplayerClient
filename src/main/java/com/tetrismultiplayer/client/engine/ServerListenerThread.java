@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 
 /**
- * Created by Marcin on 2016-02-15.
+ * Class listening to communication from server and performing selected methods.
  */
 public class ServerListenerThread extends SwingWorker<Object, Object>
 {
@@ -35,7 +35,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         this.socket = main.getSocket();
     }
 
-    public Object doInBackground() throws InterruptedException
+    /**
+     * Main method listening on server socket constantly and forwarding messages to selected methods.
+     */
+    public Object doInBackground()
     {
         try
         {
@@ -84,6 +87,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return null;
     }
 
+    /**
+     * Method setting up waiting games list.
+     * @param newMsg
+     */
     private void setGamesList(JSONObject newMsg)
     {
         this.waitingGamesList = new LinkedList<>();
@@ -122,6 +129,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         }
     }
 
+    /**
+     * Method performing timeout after not enough players in game
+     */
     private void waitingTimeout()
     {
         leftPanel.setStatusText("Brak graczy");
@@ -132,6 +142,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         leftPanel.setStatusText(String.valueOf(newMsg.getInt("time")));
     }
 
+    /**
+     * Method starting new game after receiving confirmation from server.
+     * @param newMsg
+     */
     private void startNewGame(JSONObject newMsg)
     {
         switch (newMsg.getString("type"))
@@ -178,6 +192,11 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         }
     }
 
+    /**
+     * Method getting users from new game.
+     * @param newMsg
+     * @return
+     */
     private LinkedList<User> getNewGameUsers(JSONObject newMsg)
     {
         main.getMainFrame().setSize(newMsg.getInt("playersNumber"));
@@ -200,6 +219,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return playingUsers;
     }
 
+    /**
+     * Method ending game.
+     */
     private void endGame()
     {
         leftPanel.setStatusText("Koniec gry");

@@ -5,10 +5,17 @@ import main.java.com.tetrismultiplayer.client.gui.panel.GamePanel;
 import java.awt.*;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Class representing O shaped tetromino
  */
 public class TetrominoO extends Tetromino
 {
+    /**
+     * Constructor adding bricks to O shaped tetromino.
+     * @param gamePanel reference
+     * @param color of tetromino
+     * @param x start position
+     * @param y start position
+     */
     public TetrominoO(GamePanel gamePanel, Color color, int x, int y)
     {
         super(gamePanel, x, y);

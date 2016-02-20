@@ -5,6 +5,9 @@ import main.java.com.tetrismultiplayer.client.gui.panel.MainPanel;
 
 import javax.swing.*;
 
+/**
+ * Main application frame
+ */
 public class MainFrame extends JFrame
 {
     private static final long serialVersionUID = -7224073051112865922L;
@@ -20,6 +23,9 @@ public class MainFrame extends JFrame
         init();
     }
 
+    /**
+     * Initializes elements
+     */
     private void init()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,6 +43,10 @@ public class MainFrame extends JFrame
         return mainPanel;
     }
 
+    /**
+     * Sets MainFrame and gamePanel to selected size based on players number
+     * @param playersNumber number of players
+     */
     public void setSize(int playersNumber)
     {
         mainPanel.setSize(playersNumber);

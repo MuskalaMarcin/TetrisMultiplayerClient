@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class setting connecto to game buttons visual aspect and action listeners.
+ */
 public class ButtonEditor extends DefaultCellEditor {
     protected JButton button;
 

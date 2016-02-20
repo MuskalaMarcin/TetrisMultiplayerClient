@@ -7,6 +7,9 @@ import main.java.com.tetrismultiplayer.client.gui.panel.ConnectToGamePanel;
 import javax.swing.*;
 import java.util.LinkedList;
 
+/**
+ * Frame for connect to game window.
+ */
 public class ConnectToGameFrame extends JFrame
 {
     private static final long serialVersionUID = 1489948780010762329L;

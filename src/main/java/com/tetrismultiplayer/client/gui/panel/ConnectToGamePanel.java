@@ -11,6 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * Panel for connecting to game.
+ */
 public class ConnectToGamePanel extends JPanel
 {
     private static final long serialVersionUID = -216317464444204835L;

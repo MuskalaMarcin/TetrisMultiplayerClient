@@ -13,6 +13,9 @@ import java.net.Socket;
 
 import static main.java.com.tetrismultiplayer.client.keys.KeysGetter.loadSettings;
 
+/**
+ * Main client app class.
+ */
 public class Main implements Runnable
 {
     private MainFrame mainFrame;
@@ -113,6 +116,10 @@ public class Main implements Runnable
         }
     }
 
+    /**
+     * Receives JSON from server
+     * @return JSON object from server
+     */
     public JSONObject receiveJSON()
     {
         JSONObject newObject = new JSONObject(receiveMessage());

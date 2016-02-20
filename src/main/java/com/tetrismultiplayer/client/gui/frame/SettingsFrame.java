@@ -1,9 +1,12 @@
 package main.java.com.tetrismultiplayer.client.gui.frame;
 
-import javax.swing.JFrame;
-
 import main.java.com.tetrismultiplayer.client.gui.panel.SettingsPanel;
 
+import javax.swing.*;
+
+/**
+ * Frame for user settings window.
+ */
 public class SettingsFrame extends JFrame
 {
     private static final long serialVersionUID = -6702244127334977186L;

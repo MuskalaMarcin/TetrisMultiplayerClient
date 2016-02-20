@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Game panel class for displaying game.
  */
 public class GamePanel extends JPanel
 {

@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.Vector;
 
+/**
+ * Left panel of main window with user settings and buttons.
+ */
 public class LeftPanel extends JPanel
 {
     private static final long serialVersionUID = -1576730898183895708L;
@@ -185,6 +188,11 @@ public class LeftPanel extends JPanel
         }
     }
 
+    /**
+     * Method setting up players panel.
+     * @param isConcurrent
+     * @param values
+     */
     public void setPlayersPanel(boolean isConcurrent, LinkedList<String> values)
     {
         clearPlayersPanel();

@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+/**
+ * Class with user settings panel
+ */
 public class SettingsPanel extends JPanel
 {
     private static final long serialVersionUID = 4746055900161316999L;
