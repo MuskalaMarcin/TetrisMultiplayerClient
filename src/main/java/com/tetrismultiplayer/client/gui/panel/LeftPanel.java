@@ -175,6 +175,11 @@ public class LeftPanel extends JPanel
         return scoreTxtField;
     }
 
+    public void setScoreTxtField(Integer score)
+    {
+        scoreTxtField.setText(score.toString());
+    }
+
     public JTextField getStatusTxtField()
     {
         return statusTxtField;
@@ -190,6 +195,7 @@ public class LeftPanel extends JPanel
 
     /**
      * Method setting up players panel.
+     *
      * @param isConcurrent
      * @param values
      */

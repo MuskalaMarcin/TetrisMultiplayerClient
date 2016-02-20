@@ -12,6 +12,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Class listening to communication from server and performing selected methods.
@@ -73,6 +74,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         break;
                     case "setGamesList":
                         setGamesList(newMsg);
+                        break;
+                    case "addScore":
+                        addScore(newMsg);
+                        break;
                 }
             }
 
@@ -88,7 +93,31 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
     }
 
     /**
+     * Method adding score to selected user.
+     *
+     * @param newMsg
+     */
+    private void addScore(JSONObject newMsg)
+    {
+        game.getUser(newMsg.getString("identifier")).addScore(newMsg.getInt("score"));
+        if (game.getGameType() == Game.GameType.CONCURRENT)
+        {
+            LinkedList<String> panelValues = new LinkedList<>();
+            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
+                panelValues.add(user.getNick());
+                panelValues.add(String.valueOf(user.getScore()));
+            });
+            leftPanel.setPlayersPanel(true, panelValues);
+        }
+        else
+        {
+            leftPanel.setScoreTxtField(game.getUser(newMsg.getString("identifier")).getScore());
+        }
+    }
+
+    /**
      * Method setting up waiting games list.
+     *
      * @param newMsg
      */
     private void setGamesList(JSONObject newMsg)
@@ -144,6 +173,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
 
     /**
      * Method starting new game after receiving confirmation from server.
+     *
      * @param newMsg
      */
     private void startNewGame(JSONObject newMsg)
@@ -194,6 +224,7 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
 
     /**
      * Method getting users from new game.
+     *
      * @param newMsg
      * @return
      */
