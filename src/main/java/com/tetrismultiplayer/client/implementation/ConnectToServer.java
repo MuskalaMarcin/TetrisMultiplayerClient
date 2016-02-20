@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Class connecting to server.
  */
 public class ConnectToServer extends SwingWorker<Boolean, Object>
 {
@@ -21,7 +21,7 @@ public class ConnectToServer extends SwingWorker<Boolean, Object>
     private LeftPanel leftPanel;
 
     /**
-     * Constructor for connect/disconnect action listener.
+     * Constructor for connect to server class.
      */
     public ConnectToServer(Main main, LeftPanel leftPanel)
     {

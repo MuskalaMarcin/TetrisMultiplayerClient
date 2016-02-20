@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Created by Marcin on 2016-02-17.
+ * Common class for all game types.
  */
 public abstract class Game
 {
@@ -65,6 +65,10 @@ public abstract class Game
         return playersNumber;
     }
 
+    /**
+     * Receives move in JSON object and perfroms move on selected tetromino.
+     * @param newMsg JSON message
+     */
     public void performMove(JSONObject newMsg)
     {
         Tetromino movedTetromino = getUser(newMsg.getString("identifier")).getActiveTetromino();
@@ -88,6 +92,10 @@ public abstract class Game
         }
     }
 
+    /**
+     * Receives adding new tetromino request in JSON object and adds it to selected user.
+     * @param newMsg JSON message
+     */
     public void addNewTetromino(JSONObject newMsg)
     {
         User newTetrominoUser = getUser(newMsg.getString("identifier"));
@@ -122,7 +130,11 @@ public abstract class Game
         newTetrominoUser.addTetromino(newTetromino);
     }
 
-    public void clearLine(JSONObject newMsg) throws InterruptedException
+    /**
+     * Method clearing one line from game panel
+     * @param newMsg JSON object
+     */
+    public void clearLine(JSONObject newMsg)
     {
         int position = newMsg.getInt("position");
         int minColumn;

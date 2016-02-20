@@ -9,6 +9,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class maintaing user keys settings.
+ */
 public class KeysGetter
 {
     public static HashMap<Integer, String> keys;
@@ -22,6 +25,9 @@ public class KeysGetter
 	loadSettingsFromFile();
     }
 
+	/**
+	 * Method loading keys values.
+	 */
     public static void loadKeys()
     {
 	keyNames = new ArrayList<String>();
@@ -49,6 +55,9 @@ public class KeysGetter
 	}
     }
 
+	/**
+	 * Loads previously saved settings from file.
+	 */
     public static void loadSettingsFromFile()
     {
 	try

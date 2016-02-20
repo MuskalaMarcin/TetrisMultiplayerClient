@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+/**
+ * Class for new game panel.
+ */
 public class NewGamePanel extends JPanel
 {
     private static final long serialVersionUID = -8857678844077213832L;
@@ -96,6 +99,9 @@ public class NewGamePanel extends JPanel
         setElementsSettings();
     }
 
+    /**
+     * Method setting up panel elements settings.
+     */
     private void setElementsSettings()
     {
         startGameBtn.addActionListener(action -> {

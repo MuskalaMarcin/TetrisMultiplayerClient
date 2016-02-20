@@ -7,6 +7,9 @@ import org.json.JSONObject;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Action listener for user keyboard.
+ */
 public class GameKeysListener implements KeyListener
 {
     private Main main;

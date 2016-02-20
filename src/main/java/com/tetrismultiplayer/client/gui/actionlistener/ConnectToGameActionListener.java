@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
+/**
+ * Action listener for connect to game button.
+ */
 public class ConnectToGameActionListener implements ActionListener
 {
     private Main main;

@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Main application panel
+ */
 public class MainPanel extends JPanel
 {
     private static final long serialVersionUID = -4369013203321168390L;

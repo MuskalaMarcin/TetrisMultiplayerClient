@@ -5,7 +5,12 @@ import main.java.com.tetrismultiplayer.client.gui.actionlistener.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.Vector;
 
+/**
+ * Left panel of main window with user settings and buttons.
+ */
 public class LeftPanel extends JPanel
 {
     private static final long serialVersionUID = -1576730898183895708L;
@@ -106,6 +111,7 @@ public class LeftPanel extends JPanel
     {
         playersPanel.setBounds(10, 290, 180, 100);
         playersPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        playersPanel.setLayout(new BorderLayout());
 
         btnConnect.setBounds(10, 215, 180, 25);
         btnConnect.setBackground(Color.WHITE);
@@ -169,6 +175,11 @@ public class LeftPanel extends JPanel
         return scoreTxtField;
     }
 
+    public void setScoreTxtField(Integer score)
+    {
+        scoreTxtField.setText(score.toString());
+    }
+
     public JTextField getStatusTxtField()
     {
         return statusTxtField;
@@ -181,6 +192,54 @@ public class LeftPanel extends JPanel
             statusTxtField.setText(text);
         }
     }
+
+    /**
+     * Method setting up players panel.
+     *
+     * @param isConcurrent
+     * @param values
+     */
+    public void setPlayersPanel(boolean isConcurrent, LinkedList<String> values)
+    {
+        clearPlayersPanel();
+        Vector<Object> columnNames = new Vector<>();
+        columnNames.add("Gracz");
+        if (!isConcurrent)
+        {
+            columnNames.add("Ranking");
+        }
+        else
+        {
+            columnNames.add("Wynik");
+        }
+        Vector<Object> data = new Vector<>();
+        for (int i = 0; i < values.size(); i += 2)
+        {
+            Vector<Object> row = new Vector<>();
+            row.add(values.get(i));
+            row.add(values.get(i + 1));
+            data.add(row);
+        }
+
+        JTable playersTable = new JTable(data, columnNames)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+        };
+        playersTable.setFillsViewportHeight(true);
+        playersPanel.add(new JScrollPane(playersTable));
+        playersPanel.validate();
+        playersPanel.repaint();
+    }
+
+    public void clearPlayersPanel()
+    {
+        playersPanel.removeAll();
+    }
+
 
     /**
      * Sets connect button enabled value to selected state.

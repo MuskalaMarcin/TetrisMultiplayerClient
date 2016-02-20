@@ -1,7 +1,7 @@
 package main.java.com.tetrismultiplayer.client.implementation;
 
 /**
- * Created by Marcin on 2016-02-16.
+ * Exception to be thrown if server denies connection request ie. too many players.
  */
 public class ConnectingException extends Exception
 {

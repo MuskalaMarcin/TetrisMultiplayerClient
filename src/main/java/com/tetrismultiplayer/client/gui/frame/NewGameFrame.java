@@ -5,6 +5,9 @@ import main.java.com.tetrismultiplayer.client.gui.panel.NewGamePanel;
 
 import javax.swing.*;
 
+/**
+ * Frame for starting new game window.
+ */
 public class NewGameFrame extends JFrame
 {
     private static final long serialVersionUID = -6770175343284490332L;

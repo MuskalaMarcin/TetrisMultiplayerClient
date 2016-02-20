@@ -1,11 +1,14 @@
 package main.java.com.tetrismultiplayer.client.gui.actionlistener;
 
-import java.awt.EventQueue;
+import main.java.com.tetrismultiplayer.client.gui.frame.SettingsFrame;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import main.java.com.tetrismultiplayer.client.gui.frame.SettingsFrame;
-
+/**
+ * Action listener for settings button.
+ */
 public class SettingsActionListener implements ActionListener
 {
 

@@ -12,9 +12,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
- * Created by Marcin on 2016-02-15.
+ * Class listening to communication from server and performing selected methods.
  */
 public class ServerListenerThread extends SwingWorker<Object, Object>
 {
@@ -35,7 +36,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         this.socket = main.getSocket();
     }
 
-    public Object doInBackground() throws InterruptedException
+    /**
+     * Main method listening on server socket constantly and forwarding messages to selected methods.
+     */
+    public Object doInBackground()
     {
         try
         {
@@ -58,8 +62,8 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         game.clearLine(newMsg);
                         break;
                     case "endGame":
-                        endGame();
 			changeButtonStateToTrue();
+                        endGame();
                         break;
                     case "setRanking":
                         setRanking(newMsg);
@@ -70,11 +74,14 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                     case "timeout":
                         waitingTimeout();
                         break;
-		    case "isFullGames":
-			setFullGamesStatus();
-			break;
                     case "setGamesList":
                         setGamesList(newMsg);
+                        break;
+                    case "addScore":
+                        addScore(newMsg);
+                        break;
+		    case "isFullGames":
+			setFullGamesStatus();
                 }
             }
 
@@ -89,11 +96,42 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return null;
     }
 
+    /**
+     * Method adding score to selected user.
+     *
+     * @param newMsg
+     */
+    private void addScore(JSONObject newMsg)
+    {
+        game.getUser(newMsg.getString("identifier")).addScore(newMsg.getInt("score"));
+        if (game.getGameType() == Game.GameType.CONCURRENT)
+        {
+            LinkedList<String> panelValues = new LinkedList<>();
+            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
+                panelValues.add(user.getNick());
+                panelValues.add(String.valueOf(user.getScore()));
+            });
+            leftPanel.setPlayersPanel(true, panelValues);
+        }
+        else
+        {
+            leftPanel.setScoreTxtField(game.getUser(newMsg.getString("identifier")).getScore());
+        }
+    }
+
+    /**
+     * Method informing user about full games list on server
+     */
     private void setFullGamesStatus()
     {
 	leftPanel.setStatusText("Max. liczba gier serwera");
     }
 
+    /**
+     * Method setting up waiting games list.
+     *
+     * @param newMsg
+     */
     private void setGamesList(JSONObject newMsg)
     {
         this.waitingGamesList = new LinkedList<>();
@@ -132,6 +170,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         }
     }
 
+    /**
+     * Method performing timeout after not enough players in game
+     */
     private void waitingTimeout()
     {
         leftPanel.setStatusText("Brak graczy");
@@ -142,17 +183,32 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         leftPanel.setStatusText(String.valueOf(newMsg.getInt("time")));
     }
 
+    /**
+     * Method starting new game after receiving confirmation from server.
+     *
+     * @param newMsg
+     */
     private void startNewGame(JSONObject newMsg)
     {
         switch (newMsg.getString("type"))
         {
             case "single":
                 leftPanel.setStatusText("Gra pojedyncza");
+                LinkedList<String> panelValues1 = new LinkedList<>();
+                panelValues1.add(localUser.getNick());
+                panelValues1.add(String.valueOf(localUser.getRanking()));
+                leftPanel.setPlayersPanel(false, panelValues1);
                 game = new SingleGame(gamePanel, localUser);
                 break;
             case "cooperation":
                 leftPanel.setStatusText("Gra wspólna");
                 LinkedList<User> newGameUsers = getNewGameUsers(newMsg);
+                LinkedList<String> panelValues = new LinkedList<>();
+                newGameUsers.forEach(user -> {
+                    panelValues.add(user.getNick());
+                    panelValues.add(String.valueOf(user.getRanking()));
+                });
+                leftPanel.setPlayersPanel(false, panelValues);
                 game = new CooperationGame(gamePanel, newGameUsers.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers.forEach(user -> game.addUser(user));
                 break;
@@ -166,12 +222,24 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                     backgroundSeparator.setSize(new Dimension(2, Brick.LENGTH * 20 - 2));
                     gamePanel.add(backgroundSeparator);
                 }
+                LinkedList<String> panelValues2 = new LinkedList<>();
+                newGameUsers2.forEach(user -> {
+                    panelValues2.add(user.getNick());
+                    panelValues2.add("0");
+                });
+                leftPanel.setPlayersPanel(true, panelValues2);
                 game = new ConcurrentGame(gamePanel, newGameUsers2.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers2.forEach(user -> game.addUser(user));
                 break;
         }
     }
 
+    /**
+     * Method getting users from new game.
+     *
+     * @param newMsg
+     * @return
+     */
     private LinkedList<User> getNewGameUsers(JSONObject newMsg)
     {
         main.getMainFrame().setSize(newMsg.getInt("playersNumber"));
@@ -194,6 +262,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return playingUsers;
     }
 
+    /**
+     * Method ending game.
+     */
     private void endGame()
     {
         leftPanel.setStatusText("Koniec gry");
@@ -213,6 +284,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return waitingGamesList;
     }
 
+    /**
+     * Method changing buttons state to false
+     */
     public void changeButtonStateToFalse()
     {
 	leftPanel.getComponent(4).setEnabled(false);
@@ -220,6 +294,9 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
 	leftPanel.repaint();
     }
 
+    /**
+     * Method changing buttons state to true
+     */
     public void changeButtonStateToTrue()
     {
 	leftPanel.getComponent(4).setEnabled(true);

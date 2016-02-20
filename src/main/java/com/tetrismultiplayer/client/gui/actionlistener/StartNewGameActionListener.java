@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Action listener for start new game button.
+ */
 public class StartNewGameActionListener implements ActionListener
 {
     private Main main;

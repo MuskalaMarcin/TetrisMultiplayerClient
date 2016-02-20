@@ -5,7 +5,7 @@ import main.java.com.tetrismultiplayer.client.engine.tetromino.Tetromino;
 import java.util.LinkedList;
 
 /**
- * Created by Marcin on 2016-02-17.
+ * Class representing one of application users
  */
 public class User
 {
@@ -15,6 +15,7 @@ public class User
     private String identifier;
     private String ip;
     private Integer ranking;
+    private Integer score;
 
     public User(String nick, String identifier, String ip, Integer ranking)
     {
@@ -23,6 +24,7 @@ public class User
         this.ip = ip;
         this.ranking = ranking;
         this.tetrominos = new LinkedList<>();
+        this.score = 0;
     }
 
     public LinkedList<Tetromino> getTetrominos()
@@ -55,6 +57,31 @@ public class User
     public String getIdentifier()
     {
         return identifier;
+    }
+
+    public Integer getRanking()
+    {
+        return ranking;
+    }
+
+    public void setRanking(Integer ranking)
+    {
+        this.ranking = ranking;
+    }
+
+    public Integer getScore()
+    {
+        return score;
+    }
+
+    public void resetScore()
+    {
+        this.score = 0;
+    }
+
+    public void addScore(Integer score)
+    {
+        this.score += score;
     }
 }
 

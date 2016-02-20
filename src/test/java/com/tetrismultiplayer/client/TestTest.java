@@ -1,4 +1,4 @@
-package test.java;
+package test.java.com.tetrismultiplayer.client;
 
 import static org.junit.Assert.assertTrue;
 
