@@ -22,31 +22,29 @@ public class ConnectToGamePanel extends JPanel
      */
     public ConnectToGamePanel(LinkedList<Game> waitingGames, Main main)
     {
-	setLayout(new FlowLayout());
-	this.waitingGames = waitingGames;
+        setLayout(new FlowLayout());
+        this.waitingGames = waitingGames;
 
-	DefaultTableModel dm = new DefaultTableModel();
-	dm.addColumn("Typ");
-	dm.addColumn("Gracze");
-	dm.addColumn(" ");
-	DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-	centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        DefaultTableModel dm = new DefaultTableModel();
+        dm.addColumn("Typ");
+        dm.addColumn("Gracze");
+        dm.addColumn(" ");
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-	waitingGames.forEach(game -> {
-	    String[] row = { game.getGameType().name(), game.getUsers().size() + "/" + game.getPlayersNumber().toString(), "Dołącz " + game.getIdentifier() };
-	    dm.addRow(row);
-	});
+        waitingGames.forEach(game -> {
+            String[] row = {game.getGameType().name(), game.getUsers().size() + "/" + game.getPlayersNumber().toString(), "Dołącz " + game.getIdentifier()};
+            dm.addRow(row);
+        });
 
-	JTable table = new JTable(dm);
-	table.getColumn(" ").setCellRenderer(new ButtonRenderer());
-	table.getColumn(" ").setCellEditor(
-			new ButtonEditor(new JCheckBox(), main));
-	table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-	table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-	JScrollPane scroll = new JScrollPane(table);
-	scroll.setSize(450, 300);
-	add(scroll);
+        JTable table = new JTable(dm);
+        table.getColumn(" ").setCellRenderer(new ButtonRenderer());
+        table.getColumn(" ").setCellEditor(
+                new ButtonEditor(new JCheckBox(), main));
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setSize(450, 300);
+        add(scroll);
     }
-
-
 }

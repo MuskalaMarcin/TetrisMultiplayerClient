@@ -1,7 +1,7 @@
 package main.java.com.tetrismultiplayer.client.engine;
 
 import main.java.com.tetrismultiplayer.client.Main;
-import main.java.com.tetrismultiplayer.client.engine.tetromino.*;
+import main.java.com.tetrismultiplayer.client.engine.tetromino.Brick;
 import main.java.com.tetrismultiplayer.client.gui.panel.GamePanel;
 import main.java.com.tetrismultiplayer.client.gui.panel.LeftPanel;
 import org.json.JSONArray;
@@ -12,7 +12,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Created by Marcin on 2016-02-15.
@@ -49,13 +48,13 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         startNewGame(newMsg);
                         break;
                     case "move":
-                        performMove(newMsg);
+                        game.performMove(newMsg);
                         break;
                     case "newTetromino":
-                        addNewTetromino(newMsg);
+                        game.addNewTetromino(newMsg);
                         break;
                     case "clearLine":
-                        clearLine(newMsg);
+                        game.clearLine(newMsg);
                         break;
                     case "endGame":
                         endGame();
@@ -106,10 +105,10 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                         switch (game.getString("type"))
                         {
                             case "CONCURRENT":
-                                waitingGame = new ConcurrentGame(newUser, game.getInt("playersNumber"));
+                                waitingGame = new ConcurrentGame(gamePanel, newUser, game.getInt("playersNumber"));
                                 break;
                             case "COOPERATION":
-                                waitingGame = new CooperationGame(newUser, game.getInt("playersNumber"));
+                                waitingGame = new CooperationGame(gamePanel, newUser, game.getInt("playersNumber"));
                                 break;
                         }
                     }
@@ -139,19 +138,25 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         {
             case "single":
                 leftPanel.setStatusText("Gra pojedyncza");
-                game = new SingleGame(localUser);
+                game = new SingleGame(gamePanel, localUser);
                 break;
             case "cooperation":
                 leftPanel.setStatusText("Gra wspólna");
                 LinkedList<User> newGameUsers = getNewGameUsers(newMsg);
-                game = new CooperationGame(newGameUsers.getFirst(), newMsg.getInt("playersNumber"));
+                game = new CooperationGame(gamePanel, newGameUsers.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers.forEach(user -> game.addUser(user));
-                System.out.println("tutaj");
                 break;
             case "concurrent":
                 leftPanel.setStatusText("Gra rywalizacja");
                 LinkedList<User> newGameUsers2 = getNewGameUsers(newMsg);
-                game = new ConcurrentGame(newGameUsers2.getFirst(), newMsg.getInt("playersNumber"));
+                for (int i = 0; i < newMsg.getInt("playersNumber"); i++)
+                {
+                    JSeparator backgroundSeparator = new JSeparator(SwingConstants.VERTICAL);
+                    backgroundSeparator.setLocation(new Point(Brick.LENGTH * 10 * (i + 1), 1));
+                    backgroundSeparator.setSize(new Dimension(2, Brick.LENGTH * 20 - 2));
+                    gamePanel.add(backgroundSeparator);
+                }
+                game = new ConcurrentGame(gamePanel, newGameUsers2.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers2.forEach(user -> game.addUser(user));
                 break;
         }
@@ -179,116 +184,13 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         return playingUsers;
     }
 
-    private void performMove(JSONObject newMsg)
-    {
-        Tetromino movedTetromino = game.getUser(newMsg.getString("identifier")).getActiveTetromino();
-        switch (newMsg.getString("key"))
-        {
-            case "down":
-                movedTetromino.moveDown();
-                break;
-            case "left":
-                movedTetromino.moveLeft();
-                break;
-            case "right":
-                movedTetromino.moveRight();
-                break;
-            case "drop":
-                movedTetromino.drop(newMsg.getInt("amount"));
-                break;
-            case "rotate":
-                movedTetromino.rotate();
-                break;
-        }
-    }
-
-    private void addNewTetromino(JSONObject newMsg)
-    {
-        User newTetrominoUser = game.getUser(newMsg.getString("identifier"));
-        Tetromino newTetromino = null;
-        int positionX = newMsg.getInt("row") * Brick.LENGTH;
-        int positionY = newMsg.getInt("column") * Brick.LENGTH;
-        Color color = new Color(newMsg.getInt("color"));
-        switch (newMsg.getString("tetrominoType"))
-        {
-            case "I":
-                newTetromino = new TetrominoI(gamePanel, color, positionX, positionY);
-                break;
-            case "J":
-                newTetromino = new TetrominoJ(gamePanel, color, positionX, positionY);
-                break;
-            case "L":
-                newTetromino = new TetrominoL(gamePanel, color, positionX, positionY);
-                break;
-            case "O":
-                newTetromino = new TetrominoO(gamePanel, color, positionX, positionY);
-                break;
-            case "S":
-                newTetromino = new TetrominoS(gamePanel, color, positionX, positionY);
-                break;
-            case "T":
-                newTetromino = new TetrominoT(gamePanel, color, positionX, positionY);
-                break;
-            case "Z":
-                newTetromino = new TetrominoZ(gamePanel, color, positionX, positionY);
-                break;
-        }
-        newTetrominoUser.addTetromino(newTetromino);
-    }
-
-    private void clearLine(JSONObject newMsg) throws InterruptedException
-    {
-        if (newMsg.getInt("position") == -1)
-        {
-            int rowWidth = newMsg.getInt("row") * Brick.LENGTH;
-            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
-                LinkedList<Tetromino> tetrominos = user.getTetrominos();
-                for (int i = 0; i < tetrominos.size(); i++)
-                {
-                    LinkedList<Brick> bricks = tetrominos.get(i).getBricksList();
-                    for (int j = 0; j < bricks.size(); j++)
-                    {
-                        if (bricks.get(j).getPosition().y == rowWidth)
-                        {
-                            tetrominos.get(i).removeBrick(bricks.get(j));
-                            j--;
-                            if (tetrominos.get(i).getBricksList().isEmpty())
-                            {
-                                for (int k = 0; k < tetrominos.get(i).getBricksList().size(); k++)
-                                {
-                                    gamePanel.remove(tetrominos.get(i).getBricksList().get(k));
-                                    tetrominos.get(i).removeBrick(tetrominos.get(i).getBricksList().get(k));
-                                }
-                                user.removeTetromino(tetrominos.get(i));
-                                i--;
-                            }
-                        }
-                    }
-                }
-            });
-
-            game.getUsers().entrySet().stream().map(Map.Entry::getValue).forEach(user -> {
-                user.getTetrominos().forEach(tetromino -> {
-                    LinkedList<Brick> bricks = tetromino.getBricksList();
-                    bricks.sort((brick1, brick2) -> Integer.valueOf(brick1.getPosition().y).compareTo(brick2.getPosition().y));
-                    if (bricks.getLast().getPosition().y < rowWidth)
-                    {
-                        tetromino.moveDown();
-                    }
-                });
-            });
-            
-            gamePanel.validate();
-            gamePanel.repaint();
-        }
-    }
-
     private void endGame()
     {
         leftPanel.setStatusText("Koniec gry");
         localUser.getTetrominos().clear();
         main.getMainPanel().getGamePanel().removeAll();
         main.getMainPanel().getGamePanel().repaint();
+        game = null;
     }
 
     private void setRanking(JSONObject newMsg)
