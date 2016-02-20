@@ -152,7 +152,7 @@ public class LeftPanel extends JPanel
 
         nickTxtField.setBounds(55, 185, 135, 25);
         nickTxtField.setColumns(10);
-        nickTxtField.setText("Gość");
+        nickTxtField.setText("Gosc");
         nickTxtField.setHorizontalAlignment(JTextField.CENTER);
 
         scoreTxtField.setBounds(55, 10, 135, 25);
