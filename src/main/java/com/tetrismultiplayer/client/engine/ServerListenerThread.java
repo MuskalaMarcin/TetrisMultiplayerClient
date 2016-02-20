@@ -138,11 +138,21 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
         {
             case "single":
                 leftPanel.setStatusText("Gra pojedyncza");
+                LinkedList<String> panelValues1 = new LinkedList<>();
+                panelValues1.add(localUser.getNick());
+                panelValues1.add(String.valueOf(localUser.getRanking()));
+                leftPanel.setPlayersPanel(false, panelValues1);
                 game = new SingleGame(gamePanel, localUser);
                 break;
             case "cooperation":
                 leftPanel.setStatusText("Gra wspólna");
                 LinkedList<User> newGameUsers = getNewGameUsers(newMsg);
+                LinkedList<String> panelValues = new LinkedList<>();
+                newGameUsers.forEach(user -> {
+                    panelValues.add(user.getNick());
+                    panelValues.add(String.valueOf(user.getRanking()));
+                });
+                leftPanel.setPlayersPanel(false, panelValues);
                 game = new CooperationGame(gamePanel, newGameUsers.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers.forEach(user -> game.addUser(user));
                 break;
@@ -156,6 +166,12 @@ public class ServerListenerThread extends SwingWorker<Object, Object>
                     backgroundSeparator.setSize(new Dimension(2, Brick.LENGTH * 20 - 2));
                     gamePanel.add(backgroundSeparator);
                 }
+                LinkedList<String> panelValues2 = new LinkedList<>();
+                newGameUsers2.forEach(user -> {
+                    panelValues2.add(user.getNick());
+                    panelValues2.add("0");
+                });
+                leftPanel.setPlayersPanel(true, panelValues2);
                 game = new ConcurrentGame(gamePanel, newGameUsers2.getFirst(), newMsg.getInt("playersNumber"));
                 newGameUsers2.forEach(user -> game.addUser(user));
                 break;

@@ -56,5 +56,10 @@ public class User
     {
         return identifier;
     }
+
+    public Integer getRanking()
+    {
+        return ranking;
+    }
 }
 
